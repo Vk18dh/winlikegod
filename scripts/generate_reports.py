@@ -21,9 +21,16 @@ def generate_reports():
         
     metrics_to_show = {
         'bbox_mAP': 'mAP',
+        'bbox_mAP_50': 'mAP50',
+        'bbox_mAP_75': 'mAP75',
         'bbox_mAP_s': 'mAPS',
-        'FLOPs': 'FLOPs',
-        'Params': 'Params'
+        'bbox_mAP_m': 'mAPM',
+        'bbox_mAP_l': 'mAPL',
+        'FPS': 'FPS',
+        'Inference Time': 'Inference Time (ms)',
+        'Model Size': 'Model Size (MB)',
+        'Params': 'Parameters',
+        'FLOPs': 'FLOPs'
     }
     
     rows = {m_key: f"| {m_label} |" for m_key, m_label in metrics_to_show.items()}

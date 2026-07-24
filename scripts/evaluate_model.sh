@@ -30,6 +30,12 @@ PYTHONPATH=/workspace/external/qfdet-baseline python /workspace/external/qfdet-b
     --out /workspace/results/predictions/${MODEL_NAME}.pkl \
     --eval bbox > /workspace/results/metrics/${MODEL_NAME}_raw.txt
 
+echo "Generating Official COCO JSON Submission Format..."
+PYTHONPATH=/workspace/external/qfdet-baseline python /workspace/external/qfdet-baseline/tools/test.py \
+    $CONFIG \
+    $CHECKPOINT \
+    --format-only --eval-options "jsonfile_prefix=/workspace/results/predictions/coco_format_${MODEL_NAME}"
+
 echo "Raw evaluation complete. Parsing metrics..."
 
 # Run python parser to convert raw txt to clean JSON

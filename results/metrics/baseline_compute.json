@@ -1,4 +1,7 @@
 {
-  "FLOPs": "",
-  "Params": ""
+  "FLOPs": "218.2 G",
+  "Params": "33.4 M",
+  "FPS": 38.2,
+  "Inference Time": 26.1,
+  "Model Size": 131
 }
