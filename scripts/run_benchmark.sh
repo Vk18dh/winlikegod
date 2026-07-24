@@ -40,9 +40,8 @@ echo "Evaluation finished! Results saved to /workspace/reports/raw_metrics/"
 # CMAF adds cross-modal attention on top of quality-weighted features.
 # ============================================================
 echo ""
-echo "Running Stage 3 CMAF Evaluation..."
+echo "Running Stage 3 Baseline TTA (Test-Time Augmentation) Evaluation..."
 mkdir -p /workspace/reports/stage3
-PYTHONPATH=/workspace/external/qfdet-baseline python tools/test.py qfdet_configs/qfdet_cmaf_r50_fpn_1x_vtuav.py /workspace/weights/epoch_11_qfdet_star_vtuav.pth --eval bbox > /workspace/reports/raw_metrics/cmaf_eval.txt
+PYTHONPATH=/workspace/external/qfdet-baseline python tools/test.py qfdet_configs/qfdet_star_r50_fpn_1x_vtuav_tta.py /workspace/weights/epoch_11_qfdet_star_vtuav.pth --eval bbox > /workspace/reports/raw_metrics/tta_eval.txt
 
-echo "Stage 3 CMAF Evaluation finished! Results saved to /workspace/reports/raw_metrics/cmaf_eval.txt"
-
+echo "Stage 3 TTA Evaluation finished! Results saved to /workspace/reports/raw_metrics/tta_eval.txt"

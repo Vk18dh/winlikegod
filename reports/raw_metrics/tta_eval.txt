@@ -1,0 +1,10 @@
+loading annotations into memory...
+Done (t=0.01s)
+creating index...
+index created!
+load checkpoint from local path: /workspace/weights/epoch_11_qfdet_star_vtuav.pth
+The model and loaded state dict do not match exactly
+
+unexpected key in source state_dict: fuse.fusion_cat2.conv1x1.weight, fuse.fusion_cat2.conv1x1.bias, fuse.fusion_gated.t_conv1x1.weight, fuse.fusion_gated.t_conv1x1.bias, fuse.fusion_gated.v_conv1x1.weight, fuse.fusion_gated.v_conv1x1.bias
+
+[                                                  ] 0/200, elapsed: 0s, ETA:
