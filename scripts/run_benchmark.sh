@@ -33,3 +33,16 @@ cd /workspace/external/qfdet-baseline
 PYTHONPATH=/workspace/external/qfdet-baseline python tools/test.py qfdet_configs/qfdet_star_r50_fpn_1x_vtuav.py /workspace/weights/epoch_11_qfdet_star_vtuav.pth --eval bbox > /workspace/reports/raw_metrics/fusion_eval.txt
 
 echo "Evaluation finished! Results saved to /workspace/reports/raw_metrics/"
+
+# ============================================================
+# Stage 3: CMAF (Cross-Modal Attention Fusion) Evaluation
+# Uses the same pre-trained weights as starting point.
+# CMAF adds cross-modal attention on top of quality-weighted features.
+# ============================================================
+echo ""
+echo "Running Stage 3 CMAF Evaluation..."
+mkdir -p /workspace/reports/stage3
+PYTHONPATH=/workspace/external/qfdet-baseline python tools/test.py qfdet_configs/qfdet_cmaf_r50_fpn_1x_vtuav.py /workspace/weights/epoch_11_qfdet_star_vtuav.pth --eval bbox > /workspace/reports/raw_metrics/cmaf_eval.txt
+
+echo "Stage 3 CMAF Evaluation finished! Results saved to /workspace/reports/raw_metrics/cmaf_eval.txt"
+

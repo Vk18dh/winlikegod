@@ -90,7 +90,7 @@ File: `C:\Users\dhyan\Desktop\hackathon-2\FusionGuard-AI\datasets\VTUAV_subset\v
 - Unpaired Thermal images: 1650
 
 ### Missing Files Report
-Sample missing RGB counterparts for: ['04034', '00779', '00849', '10576', '01147']
+Sample missing RGB counterparts for: ['09107', '08929', '08729', '01396', '09503']
 
 ## Dataset Summary
 The VTUAV subset contains 3400 images with 12 annotation files. Images have 1 distinct resolutions. There are some unpaired images which may require data cleaning.
