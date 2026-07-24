@@ -1,0 +1,32 @@
+{
+  "n_sampled": 200,
+  "rgb": {
+    "mean_bgr": [
+      86.74477851803627,
+      93.67605775945218,
+      98.85443239535107
+    ],
+    "std_bgr": [
+      43.94745494483824,
+      43.05325236730826,
+      41.31167966763863
+    ],
+    "mean_rgb": [
+      98.85443239535107,
+      93.67605775945218,
+      86.74477851803627
+    ],
+    "std_rgb": [
+      41.31167966763863,
+      43.05325236730826,
+      43.94745494483824
+    ],
+    "note": "mean_bgr/std_bgr for OpenCV pipelines; mean_rgb/std_rgb for PyTorch transforms"
+  },
+  "tir": {
+    "is_3channel": true,
+    "mean": 133.14856253858025,
+    "std": 59.66757474190113,
+    "note": "TIR images are 3-channel BGR but all channels are identical. Use channel 0 only or convert to grayscale, then replicate to 3 channels for ResNet backbone compatibility."
+  }
+}

@@ -1,0 +1,537 @@
+{
+  "stage": "Stage 1: Dataset Exploration, Analysis and Preparation",
+  "pdf_size_thresholds": {
+    "Small": "Area < 32^2  (< 1024 px^2)",
+    "Medium": "32^2 <= Area < 96^2  (1024 - 9216 px^2)",
+    "Large": "Area >= 96^2  (>= 9216 px^2)"
+  },
+  "splits": [
+    {
+      "split": "train",
+      "num_images": 1200,
+      "valid_anns": 8138,
+      "zero_area_removed": 0,
+      "avg_ped_per_img": 6.782,
+      "max_ped_per_img": 99,
+      "paired_rgb_tir": 1200,
+      "rgb_only": 0,
+      "tir_only": 0,
+      "scale_distribution": {
+        "Small": {
+          "count": 809,
+          "percent": 9.94
+        },
+        "Medium": {
+          "count": 5449,
+          "percent": 66.96
+        },
+        "Large": {
+          "count": 1880,
+          "percent": 23.1
+        }
+      },
+      "area_stats": {
+        "min": 114.0,
+        "max": 394210.0,
+        "mean": 6476.35,
+        "median": 4838.0,
+        "std": 7369.53
+      }
+    },
+    {
+      "split": "val",
+      "num_images": 300,
+      "valid_anns": 2336,
+      "zero_area_removed": 1,
+      "avg_ped_per_img": 7.79,
+      "max_ped_per_img": 61,
+      "paired_rgb_tir": 300,
+      "rgb_only": 0,
+      "tir_only": 0,
+      "scale_distribution": {
+        "Small": {
+          "count": 422,
+          "percent": 18.07
+        },
+        "Medium": {
+          "count": 1592,
+          "percent": 68.15
+        },
+        "Large": {
+          "count": 322,
+          "percent": 13.78
+        }
+      },
+      "area_stats": {
+        "min": 126.0,
+        "max": 258837.0,
+        "mean": 5472.07,
+        "median": 2410.0,
+        "std": 12296.27
+      }
+    },
+    {
+      "split": "test",
+      "num_images": 200,
+      "valid_anns": 2067,
+      "zero_area_removed": 1,
+      "avg_ped_per_img": 10.34,
+      "max_ped_per_img": 61,
+      "paired_rgb_tir": 200,
+      "rgb_only": 0,
+      "tir_only": 0,
+      "scale_distribution": {
+        "Small": {
+          "count": 528,
+          "percent": 25.54
+        },
+        "Medium": {
+          "count": 1270,
+          "percent": 61.44
+        },
+        "Large": {
+          "count": 269,
+          "percent": 13.01
+        }
+      },
+      "area_stats": {
+        "min": 114.0,
+        "max": 278380.0,
+        "mean": 5489.5,
+        "median": 2112.0,
+        "std": 14403.0
+      }
+    }
+  ],
+  "aggregated": {
+    "total_images": 1700,
+    "total_valid_anns": 12541,
+    "image_resolution": "1920x1080",
+    "annotation_format": "COCO JSON (category_id normalized to 1='person')",
+    "scale_distribution": {
+      "Small": {
+        "count": 1759,
+        "percent": 14.03
+      },
+      "Medium": {
+        "count": 8311,
+        "percent": 66.27
+      },
+      "Large": {
+        "count": 2471,
+        "percent": 19.7
+      }
+    },
+    "area_stats_global": {
+      "min": 114.0,
+      "max": 394210.0,
+      "mean": 6126.63,
+      "median": 3690.0
+    },
+    "key_findings": [
+      "Small pedestrians dominate: 14.0% of all instances",
+      "RGB-TIR pairing: PERFECT (0 mismatches in all splits)",
+      "TIR format: 3-channel BGR JPG with identical channels (pseudo-grayscale)",
+      "Image resolution: uniform 1920x1080 across all splits",
+      "category_id=0 in raw annotations (non-COCO-standard), normalized to 1 in processed files",
+      "2 zero-area annotations removed (val=1, test=1)"
+    ]
+  },
+  "alignment_verification": {
+    "n_checked": 30,
+    "all_shapes_match": true,
+    "mean_edge_ncc": 0.012940000000000002,
+    "per_image": [
+      {
+        "file": "00007.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0229
+      },
+      {
+        "file": "00010.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0171
+      },
+      {
+        "file": "00019.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0188
+      },
+      {
+        "file": "00028.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0163
+      },
+      {
+        "file": "00036.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0349
+      },
+      {
+        "file": "00043.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0323
+      },
+      {
+        "file": "00044.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.03
+      },
+      {
+        "file": "00054.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0223
+      },
+      {
+        "file": "00059.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0283
+      },
+      {
+        "file": "00091.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0179
+      },
+      {
+        "file": "00097.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0171
+      },
+      {
+        "file": "00107.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0133
+      },
+      {
+        "file": "00118.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0108
+      },
+      {
+        "file": "00129.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0115
+      },
+      {
+        "file": "00153.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0054
+      },
+      {
+        "file": "00154.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0029
+      },
+      {
+        "file": "00159.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0014
+      },
+      {
+        "file": "00167.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": -0.0021
+      },
+      {
+        "file": "00189.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": -0.0021
+      },
+      {
+        "file": "00201.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": -0.007
+      },
+      {
+        "file": "00208.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": -0.0008
+      },
+      {
+        "file": "00225.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0031
+      },
+      {
+        "file": "00232.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0071
+      },
+      {
+        "file": "00242.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.008
+      },
+      {
+        "file": "00252.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0124
+      },
+      {
+        "file": "00283.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0136
+      },
+      {
+        "file": "00318.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0135
+      },
+      {
+        "file": "00320.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0145
+      },
+      {
+        "file": "00321.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0122
+      },
+      {
+        "file": "00334.jpg",
+        "rgb_shape": [
+          1080,
+          1920
+        ],
+        "tir_shape": [
+          1080,
+          1920
+        ],
+        "shape_match": true,
+        "edge_ncc": 0.0126
+      }
+    ]
+  }
+}

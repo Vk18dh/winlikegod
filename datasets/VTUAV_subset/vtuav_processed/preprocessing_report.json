@@ -1,0 +1,238 @@
+{
+  "annotation_normalization": {
+    "train": {
+      "input_images": 1200,
+      "input_anns": 8138,
+      "removed_ignore": 0,
+      "removed_invalid_bbox": 0,
+      "fixed_cat_id": 8138,
+      "output_anns": 8138
+    },
+    "val": {
+      "input_images": 300,
+      "input_anns": 2337,
+      "removed_ignore": 0,
+      "removed_invalid_bbox": 1,
+      "fixed_cat_id": 2337,
+      "output_anns": 2336
+    },
+    "test": {
+      "input_images": 200,
+      "input_anns": 2068,
+      "removed_ignore": 0,
+      "removed_invalid_bbox": 1,
+      "fixed_cat_id": 2068,
+      "output_anns": 2067
+    }
+  },
+  "tir_channel_info": {
+    "n_checked": 30,
+    "pct_3channel": 100.0,
+    "pct_all_channels_equal": 100.0,
+    "recommendation": "TIR images are stored as 3-channel BGR but all channels are identical. Extract channel 0 (or convert to grayscale) and replicate to 3 channels for ResNet input. This avoids redundant memory and ensures correct normalization.",
+    "samples": [
+      {
+        "file": "00007.jpg",
+        "shape": [
+          1080,
+          1920,
+          3
+        ],
+        "all_channels_equal": true,
+        "ch0_mean": 141.81259548611112
+      },
+      {
+        "file": "00010.jpg",
+        "shape": [
+          1080,
+          1920,
+          3
+        ],
+        "all_channels_equal": true,
+        "ch0_mean": 179.62647569444445
+      },
+      {
+        "file": "00019.jpg",
+        "shape": [
+          1080,
+          1920,
+          3
+        ],
+        "all_channels_equal": true,
+        "ch0_mean": 188.871807966821
+      },
+      {
+        "file": "00028.jpg",
+        "shape": [
+          1080,
+          1920,
+          3
+        ],
+        "all_channels_equal": true,
+        "ch0_mean": 169.4658834876543
+      },
+      {
+        "file": "00036.jpg",
+        "shape": [
+          1080,
+          1920,
+          3
+        ],
+        "all_channels_equal": true,
+        "ch0_mean": 161.95002555941358
+      }
+    ]
+  },
+  "norm_stats": {
+    "n_sampled": 200,
+    "rgb": {
+      "mean_bgr": [
+        86.74477851803627,
+        93.67605775945218,
+        98.85443239535107
+      ],
+      "std_bgr": [
+        43.94745494483824,
+        43.05325236730826,
+        41.31167966763863
+      ],
+      "mean_rgb": [
+        98.85443239535107,
+        93.67605775945218,
+        86.74477851803627
+      ],
+      "std_rgb": [
+        41.31167966763863,
+        43.05325236730826,
+        43.94745494483824
+      ],
+      "note": "mean_bgr/std_bgr for OpenCV pipelines; mean_rgb/std_rgb for PyTorch transforms"
+    },
+    "tir": {
+      "is_3channel": true,
+      "mean": 133.14856253858025,
+      "std": 59.66757474190113,
+      "note": "TIR images are 3-channel BGR but all channels are identical. Use channel 0 only or convert to grayscale, then replicate to 3 channels for ResNet backbone compatibility."
+    }
+  },
+  "anchor_analysis": {
+    "k": 9,
+    "avg_iou": 0.7878045439720154,
+    "anchors_flat": [
+      [
+        13.309828758239746,
+        31.7756404876709
+      ],
+      [
+        22.433935165405273,
+        47.304588317871094
+      ],
+      [
+        28.477426528930664,
+        68.31715393066406
+      ],
+      [
+        38.53651428222656,
+        82.1214599609375
+      ],
+      [
+        55.442222595214844,
+        89.15555572509766
+      ],
+      [
+        46.85908126831055,
+        131.208740234375
+      ],
+      [
+        79.7676773071289,
+        117.63973236083984
+      ],
+      [
+        67.178466796875,
+        165.94468688964844
+      ],
+      [
+        103.61355590820312,
+        216.93040466308594
+      ]
+    ],
+    "anchors_by_level": {
+      "P3_small": [
+        [
+          13.309828758239746,
+          31.7756404876709
+        ],
+        [
+          22.433935165405273,
+          47.304588317871094
+        ],
+        [
+          28.477426528930664,
+          68.31715393066406
+        ]
+      ],
+      "P4_medium": [
+        [
+          38.53651428222656,
+          82.1214599609375
+        ],
+        [
+          55.442222595214844,
+          89.15555572509766
+        ],
+        [
+          46.85908126831055,
+          131.208740234375
+        ]
+      ],
+      "P5_large": [
+        [
+          79.7676773071289,
+          117.63973236083984
+        ],
+        [
+          67.178466796875,
+          165.94468688964844
+        ],
+        [
+          103.61355590820312,
+          216.93040466308594
+        ]
+      ]
+    },
+    "note": "These anchors are in absolute pixel coordinates at 1920x1080 image resolution. Divide by feature map stride (P3=8, P4=16, P5=32) to get anchor sizes relative to feature map grid cells."
+  },
+  "processed_paths": {
+    "annotations": "data\\vtuav_processed\\annotations",
+    "rgb_images": "data\\VTUAV_subset\\VTUAV_co",
+    "tir_images": "data\\VTUAV_subset\\VTUAV_ir"
+  },
+  "mmdet_config_snippet": {
+    "img_norm_cfg_rgb": {
+      "mean": [
+        98.85443239535107,
+        93.67605775945218,
+        86.74477851803627
+      ],
+      "std": [
+        41.31167966763863,
+        43.05325236730826,
+        43.94745494483824
+      ],
+      "to_rgb": true
+    },
+    "img_norm_cfg_tir": {
+      "mean": [
+        133.14856253858025,
+        133.14856253858025,
+        133.14856253858025
+      ],
+      "std": [
+        59.66757474190113,
+        59.66757474190113,
+        59.66757474190113
+      ],
+      "to_rgb": false
+    }
+  }
+}
