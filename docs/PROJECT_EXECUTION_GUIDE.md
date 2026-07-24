@@ -37,6 +37,15 @@ python scripts/check_env.py
 
 # 2. Download Baseline Weights
 python scripts/download_weights.py
+
+# 3. Build the Docker Container
+docker build -t fusionguard -f Dockerfile .
+
+# 4. Benchmark the Baseline Model using Docker (0.320 mAP)
+docker run --rm --gpus all --ipc=host \
+  -v C:/Users/dhyan/Desktop/hackathon-2/FusionGuard-AI:/workspace \
+  -w /workspace fusionguard \
+  bash -c "PYTHONPATH=/workspace/external/qfdet-baseline python external/qfdet-baseline/tools/test.py external/qfdet-baseline/qfdet_configs/qfdet_star_r50_fpn_1x_vtuav.py weights/epoch_11_qfdet_star_vtuav.pth --eval bbox"
 ```
 
 ### Outputs Generated
