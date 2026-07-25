@@ -1,0 +1,13 @@
+{
+    "bbox_mAP": 0.0630,
+    "bbox_mAP_50": 0.2560,
+    "bbox_mAP_75": 0.0070,
+    "bbox_mAP_s": 0.0090,
+    "bbox_mAP_m": 0.0690,
+    "bbox_mAP_l": 0.1070,
+    "FLOPs": "485.64 GFLOPs",
+    "Params": "15.65 M",
+    "FPS": 4.73,
+    "Inference Time": 211.42,
+    "Model Size": 239.05
+}

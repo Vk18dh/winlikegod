@@ -27,6 +27,7 @@ mkdir -p /workspace/results/metrics
 PYTHONPATH=/workspace/external/qfdet-baseline python /workspace/external/qfdet-baseline/tools/test.py \
     $CONFIG \
     $CHECKPOINT \
+    --fuse-conv-bn \
     --out /workspace/results/predictions/${MODEL_NAME}.pkl \
     --eval bbox > /workspace/results/metrics/${MODEL_NAME}_raw.txt
 

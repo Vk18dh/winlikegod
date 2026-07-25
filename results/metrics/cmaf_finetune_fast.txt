@@ -1,0 +1,432 @@
+/opt/conda/lib/python3.10/site-packages/mmcv/__init__.py:20: UserWarning: On January 1, 2023, MMCV will release v2.0.0, in which it will remove components related to the training process and add a data transformation module. In addition, it will rename the package names mmcv to mmcv-lite and mmcv-full to mmcv. See https://github.com/open-mmlab/mmcv/blob/master/docs/en/compatibility.md for more details.
+  warnings.warn(
+2026-07-25 03:28:11,725 - mmdet - INFO - Environment info:
+------------------------------------------------------------
+sys.platform: linux
+Python: 3.10.8 (main, Nov  4 2022, 13:48:29) [GCC 11.2.0]
+CUDA available: True
+GPU 0: NVIDIA GeForce RTX 3050 Laptop GPU
+CUDA_HOME: /opt/conda
+NVCC: Cuda compilation tools, release 11.6, V11.6.124
+GCC: gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
+PyTorch: 1.13.1
+PyTorch compiling details: PyTorch built with:
+  - GCC 9.3
+  - C++ Version: 201402
+  - Intel(R) oneAPI Math Kernel Library Version 2021.4-Product Build 20210904 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v2.6.0 (Git Hash 52b5f107dd9cf10910aaa19cb47f3abf9b349815)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - LAPACK is enabled (usually provided by MKL)
+  - NNPACK is enabled
+  - CPU capability usage: AVX2
+  - CUDA Runtime 11.6
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86;-gencode;arch=compute_37,code=compute_37
+  - CuDNN 8.3.2  (built against CUDA 11.5)
+  - Magma 2.6.1
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=11.6, CUDNN_VERSION=8.3.2, CXX_COMPILER=/opt/rh/devtoolset-9/root/usr/bin/c++, CXX_FLAGS= -fabi-version=11 -Wno-deprecated -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -fopenmp -DNDEBUG -DUSE_KINETO -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -DEDGE_PROFILER_USE_KINETO -O2 -fPIC -Wno-narrowing -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wunused-local-typedefs -Wno-unused-parameter -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-psabi -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Werror=cast-function-type -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_VERSION=1.13.1, USE_CUDA=ON, USE_CUDNN=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, 
+
+TorchVision: 0.14.1
+OpenCV: 5.0.0
+MMCV: 1.7.0
+MMCV Compiler: GCC 9.3
+MMCV CUDA Compiler: 11.6
+MMDetection: 2.28.2+unknown
+------------------------------------------------------------
+
+2026-07-25 03:28:12,393 - mmdet - INFO - Distributed training: False
+2026-07-25 03:28:12,973 - mmdet - INFO - Config:
+dataset_type = 'VTUAVdet'
+data_root = '/workspace/datasets/VTUAV_subset/VTUAV_subset/'
+img_norm_cfg = dict(
+    mean=[123.675, 116.28, 103.53],
+    std=[58.395, 57.12, 57.375],
+    to_rgb=True,
+    mean_list=([83.2, 92.24, 97.7], [134.84, 134.84, 134.84]),
+    std_list=([57.77, 57.41, 57.69], [81.58, 81.58, 81.58]))
+train_pipeline = [
+    dict(
+        type='LoadImagePairFromFile',
+        spectrals=('VTUAV_co/train/images', 'VTUAV_ir/train/images')),
+    dict(type='LoadAnnotations', with_bbox=True),
+    dict(type='Resize', img_scale=(640, 512), keep_ratio=True),
+    dict(type='RandomFlip', flip_ratio=0.5),
+    dict(
+        type='MultiNormalize',
+        mean_list=([83.2, 92.24, 97.7], [134.84, 134.84, 134.84]),
+        std_list=([57.77, 57.41, 57.69], [81.58, 81.58, 81.58]),
+        to_rgb=True),
+    dict(type='Pad', size_divisor=32),
+    dict(type='DefaultFormatBundle'),
+    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])
+]
+test_pipeline = [
+    dict(
+        type='LoadImagePairFromFile',
+        spectrals=('VTUAV_co/test/images', 'VTUAV_ir/test/images')),
+    dict(
+        type='MultiScaleFlipAug',
+        img_scale=(640, 512),
+        flip=False,
+        transforms=[
+            dict(type='Resize', keep_ratio=True),
+            dict(type='RandomFlip'),
+            dict(
+                type='MultiNormalize',
+                mean_list=([83.2, 92.24, 97.7], [134.84, 134.84, 134.84]),
+                std_list=([57.77, 57.41, 57.69], [81.58, 81.58, 81.58]),
+                to_rgb=True),
+            dict(type='Pad', size_divisor=32),
+            dict(type='DefaultFormatBundle'),
+            dict(type='Collect', keys=['img'])
+        ])
+]
+data = dict(
+    samples_per_gpu=1,
+    workers_per_gpu=0,
+    train=dict(
+        type='VTUAVdet',
+        ann_file=
+        '/workspace/datasets/VTUAV_subset/VTUAV_subset/annotations/train.json',
+        img_prefix='/workspace/datasets/VTUAV_subset/VTUAV_subset/',
+        pipeline=[
+            dict(
+                type='LoadImagePairFromFile',
+                spectrals=('VTUAV_co/train/images', 'VTUAV_ir/train/images')),
+            dict(type='LoadAnnotations', with_bbox=True),
+            dict(type='Resize', img_scale=(640, 512), keep_ratio=True),
+            dict(type='RandomFlip', flip_ratio=0.5),
+            dict(
+                type='MultiNormalize',
+                mean_list=([83.2, 92.24, 97.7], [134.84, 134.84, 134.84]),
+                std_list=([57.77, 57.41, 57.69], [81.58, 81.58, 81.58]),
+                to_rgb=True),
+            dict(type='Pad', size_divisor=32),
+            dict(type='DefaultFormatBundle'),
+            dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])
+        ]),
+    val=dict(
+        type='VTUAVdet',
+        ann_file=
+        '/workspace/datasets/VTUAV_subset/VTUAV_subset/annotations/val.json',
+        img_prefix='/workspace/datasets/VTUAV_subset/VTUAV_subset/',
+        pipeline=[
+            dict(
+                type='LoadImagePairFromFile',
+                spectrals=('VTUAV_co/val/images', 'VTUAV_ir/val/images')),
+            dict(
+                type='MultiScaleFlipAug',
+                img_scale=(640, 512),
+                flip=False,
+                transforms=[
+                    dict(type='Resize', keep_ratio=True),
+                    dict(type='RandomFlip'),
+                    dict(
+                        type='MultiNormalize',
+                        mean_list=([83.2, 92.24,
+                                    97.7], [134.84, 134.84, 134.84]),
+                        std_list=([57.77, 57.41, 57.69], [81.58, 81.58,
+                                                          81.58]),
+                        to_rgb=True),
+                    dict(type='Pad', size_divisor=32),
+                    dict(type='DefaultFormatBundle'),
+                    dict(type='Collect', keys=['img'])
+                ])
+        ]),
+    test=dict(
+        type='VTUAVdet',
+        ann_file=
+        '/workspace/datasets/VTUAV_subset/VTUAV_subset/annotations/test.json',
+        img_prefix='/workspace/datasets/VTUAV_subset/VTUAV_subset/',
+        pipeline=[
+            dict(
+                type='LoadImagePairFromFile',
+                spectrals=('VTUAV_co/test/images', 'VTUAV_ir/test/images')),
+            dict(
+                type='MultiScaleFlipAug',
+                img_scale=(640, 512),
+                flip=False,
+                transforms=[
+                    dict(type='Resize', keep_ratio=True),
+                    dict(type='RandomFlip'),
+                    dict(
+                        type='MultiNormalize',
+                        mean_list=([83.2, 92.24,
+                                    97.7], [134.84, 134.84, 134.84]),
+                        std_list=([57.77, 57.41, 57.69], [81.58, 81.58,
+                                                          81.58]),
+                        to_rgb=True),
+                    dict(type='Pad', size_divisor=32),
+                    dict(type='DefaultFormatBundle'),
+                    dict(type='Collect', keys=['img'])
+                ])
+        ]))
+evaluation = dict(
+    interval=250, metric='bbox', by_epoch=False, save_best='bbox_mAP')
+optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0001)
+optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
+lr_config = dict(
+    policy='step',
+    warmup='linear',
+    warmup_iters=500,
+    warmup_ratio=0.001,
+    step=[8, 11])
+runner = dict(type='IterBasedRunner', max_iters=250)
+checkpoint_config = dict(interval=250, by_epoch=False)
+log_config = dict(interval=50, hooks=[dict(type='TextLoggerHook')])
+custom_hooks = [dict(type='NumClassCheckHook')]
+dist_params = dict(backend='nccl')
+log_level = 'INFO'
+load_from = '/workspace/weights/epoch_11_qfdet_star_vtuav.pth'
+resume_from = None
+workflow = [('train', 1)]
+opencv_num_threads = 0
+mp_start_method = 'fork'
+auto_scale_lr = dict(enable=False, base_batch_size=16)
+model = dict(
+    type='QFDet',
+    backbone=dict(
+        type='ResNet',
+        depth=50,
+        num_stages=4,
+        out_indices=(0, 1, 2, 3),
+        frozen_stages=4,
+        norm_cfg=dict(type='BN', requires_grad=True),
+        norm_eval=True,
+        style='pytorch',
+        init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50')),
+    neck=dict(
+        type='FPN',
+        in_channels=[256, 512, 1024, 2048],
+        out_channels=256,
+        start_level=0,
+        add_extra_convs='on_output',
+        num_outs=5),
+    bbox_head=dict(
+        type='ATSSQHead',
+        num_classes=3,
+        in_channels=256,
+        stacked_convs=4,
+        feat_channels=256,
+        centerness=1,
+        anchor_generator=dict(
+            type='AnchorGenerator',
+            ratios=[1.0],
+            octave_base_scale=8,
+            scales_per_octave=1,
+            strides=[4, 8, 16, 32, 64]),
+        bbox_coder=dict(
+            type='DeltaXYWHBBoxCoder',
+            target_means=[0.0, 0.0, 0.0, 0.0],
+            target_stds=[0.1, 0.1, 0.2, 0.2]),
+        loss_cls=dict(
+            type='FocalLoss',
+            use_sigmoid=True,
+            gamma=2.0,
+            alpha=0.25,
+            loss_weight=1.0),
+        loss_bbox=dict(type='GIoULoss', loss_weight=2.0),
+        loss_centerness=dict(
+            type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
+    bbox_prehead=dict(
+        type='QFDetPreHead',
+        num_classes=3,
+        in_channels=256,
+        stacked_convs=4,
+        feat_channels=256,
+        centerness=1,
+        anchor_generator=dict(
+            type='AnchorGenerator',
+            ratios=[1.0],
+            octave_base_scale=8,
+            scales_per_octave=1,
+            strides=[4, 8, 16, 32, 64]),
+        bbox_coder=dict(
+            type='DeltaXYWHBBoxCoder',
+            target_means=[0.0, 0.0, 0.0, 0.0],
+            target_stds=[0.1, 0.1, 0.2, 0.2]),
+        loss_cls=dict(
+            type='FocalLoss',
+            use_sigmoid=True,
+            gamma=2.0,
+            alpha=0.25,
+            loss_weight=0.5),
+        loss_bbox=dict(type='GIoULoss', loss_weight=1.0),
+        loss_centerness=dict(
+            type='CrossEntropyLoss', use_sigmoid=True, loss_weight=0.5),
+        loss_quality=dict(type='MSELoss', loss_weight=0.5)),
+    base_fusion='cat',
+    quality_attention=True,
+    poolupsample=1,
+    reweight=True,
+    train_cfg=dict(
+        assigner=dict(
+            type='QLSAssigner',
+            topk=9,
+            alpha=0.8,
+            quality='x',
+            iou_calculator=dict(type='BboxDistanceMetric'),
+            iou_mode='siwd',
+            overlap_mode='hybrid'),
+        allowed_border=-1,
+        pos_weight=-1,
+        debug=False),
+    test_cfg=dict(
+        nms_pre=1000,
+        min_bbox_size=0,
+        score_thr=0.05,
+        nms=dict(type='soft_nms', iou_threshold=0.6, min_score=0.05),
+        max_per_img=100),
+    fusion_type='cmaf')
+work_dir = '/workspace/weights/fusion_cmaf_finetune'
+val_pipeline = [
+    dict(
+        type='LoadImagePairFromFile',
+        spectrals=('VTUAV_co/val/images', 'VTUAV_ir/val/images')),
+    dict(
+        type='MultiScaleFlipAug',
+        img_scale=(640, 512),
+        flip=False,
+        transforms=[
+            dict(type='Resize', keep_ratio=True),
+            dict(type='RandomFlip'),
+            dict(
+                type='MultiNormalize',
+                mean_list=([83.2, 92.24, 97.7], [134.84, 134.84, 134.84]),
+                std_list=([57.77, 57.41, 57.69], [81.58, 81.58, 81.58]),
+                to_rgb=True),
+            dict(type='Pad', size_divisor=32),
+            dict(type='DefaultFormatBundle'),
+            dict(type='Collect', keys=['img'])
+        ])
+]
+auto_resume = False
+gpu_ids = [0]
+
+2026-07-25 03:28:12,974 - mmdet - INFO - Set random seed to 419493772, deterministic: False
+/workspace/external/qfdet-baseline/mmdet/models/dense_heads/anchor_head.py:116: UserWarning: DeprecationWarning: `num_anchors` is deprecated, for consistency or also use `num_base_priors` instead
+  warnings.warn('DeprecationWarning: `num_anchors` is deprecated, '
+2026-07-25 03:28:13,476 - mmdet - INFO - initialize ResNet with init_cfg {'type': 'Pretrained', 'checkpoint': 'torchvision://resnet50'}
+2026-07-25 03:28:13,478 - mmcv - INFO - load model from: torchvision://resnet50
+2026-07-25 03:28:13,479 - mmcv - INFO - load checkpoint from torchvision path: torchvision://resnet50
+Downloading: "https://download.pytorch.org/models/resnet50-0676ba61.pth" to /root/.cache/torch/hub/checkpoints/resnet50-0676ba61.pth
+  0%|          | 0.00/97.8M [00:00<?, ?B/s]  0%|          | 24.0k/97.8M [00:00<12:27, 137kB/s]  0%|          | 144k/97.8M [00:00<02:49, 605kB/s]   0%|          | 272k/97.8M [00:00<01:57, 868kB/s]  0%|          | 480k/97.8M [00:00<01:25, 1.19MB/s]  1%|          | 608k/97.8M [00:00<01:30, 1.13MB/s]  1%|          | 1.05M/97.8M [00:00<00:59, 1.72MB/s]  2%|▏         | 1.52M/97.8M [00:00<00:40, 2.47MB/s]  2%|▏         | 1.77M/97.8M [00:01<01:12, 1.40MB/s]  3%|▎         | 2.70M/97.8M [00:01<00:39, 2.51MB/s]  3%|▎         | 3.30M/97.8M [00:01<00:31, 3.11MB/s]  4%|▍         | 3.67M/97.8M [00:01<00:31, 3.09MB/s]  4%|▍         | 4.02M/97.8M [00:01<00:30, 3.19MB/s]  4%|▍         | 4.37M/97.8M [00:02<00:42, 2.31MB/s]  5%|▌         | 4.98M/97.8M [00:02<00:31, 3.05MB/s]  5%|▌         | 5.36M/97.8M [00:02<00:40, 2.39MB/s]  6%|▌         | 5.66M/97.8M [00:02<00:39, 2.47MB/s]  6%|▌         | 5.95M/97.8M [00:02<00:39, 2.41MB/s]  6%|▋         | 6.23M/97.8M [00:03<00:48, 1.99MB/s]  7%|▋         | 6.74M/97.8M [00:03<00:40, 2.33MB/s]  7%|▋         | 7.26M/97.8M [00:03<00:42, 2.21MB/s]  8%|▊         | 7.65M/97.8M [00:03<00:39, 2.41MB/s]  8%|▊         | 8.12M/97.8M [00:04<00:54, 1.74MB/s]  9%|▉         | 8.88M/97.8M [00:04<00:42, 2.19MB/s] 10%|▉         | 9.43M/97.8M [00:04<00:35, 2.64MB/s] 10%|▉         | 9.74M/97.8M [00:04<00:35, 2.57MB/s] 10%|█         | 10.0M/97.8M [00:04<00:35, 2.61MB/s] 11%|█         | 10.3M/97.8M [00:04<00:45, 2.02MB/s] 11%|█         | 10.8M/97.8M [00:05<00:41, 2.22MB/s] 12%|█▏        | 11.5M/97.8M [00:05<00:29, 3.06MB/s] 12%|█▏        | 11.8M/97.8M [00:05<00:29, 3.05MB/s] 12%|█▏        | 12.2M/97.8M [00:05<00:29, 3.07MB/s] 13%|█▎        | 12.5M/97.8M [00:05<00:37, 2.40MB/s] 13%|█▎        | 12.8M/97.8M [00:05<00:39, 2.24MB/s] 14%|█▍        | 13.5M/97.8M [00:05<00:26, 3.38MB/s] 14%|█▍        | 13.9M/97.8M [00:06<00:32, 2.70MB/s] 15%|█▍        | 14.2M/97.8M [00:06<00:30, 2.85MB/s] 15%|█▍        | 14.6M/97.8M [00:06<00:30, 2.85MB/s] 15%|█▌        | 15.1M/97.8M [00:06<00:25, 3.38MB/s] 16%|█▌        | 15.4M/97.8M [00:06<00:28, 2.98MB/s] 16%|█▌        | 15.8M/97.8M [00:06<00:28, 3.05MB/s] 16%|█▋        | 16.1M/97.8M [00:06<00:28, 3.05MB/s] 17%|█▋        | 16.4M/97.8M [00:07<00:36, 2.34MB/s] 17%|█▋        | 16.9M/97.8M [00:07<00:27, 3.08MB/s] 18%|█▊        | 17.3M/97.8M [00:07<00:38, 2.20MB/s] 18%|█▊        | 17.6M/97.8M [00:07<00:44, 1.90MB/s] 19%|█▉        | 18.4M/97.8M [00:07<00:27, 3.02MB/s] 19%|█▉        | 18.8M/97.8M [00:07<00:27, 3.06MB/s] 20%|█▉        | 19.2M/97.8M [00:08<00:40, 2.06MB/s] 20%|██        | 19.6M/97.8M [00:08<00:38, 2.14MB/s] 20%|██        | 19.8M/97.8M [00:08<00:41, 1.98MB/s] 21%|██        | 20.1M/97.8M [00:08<00:39, 2.05MB/s] 21%|██        | 20.7M/97.8M [00:08<00:27, 2.92MB/s] 22%|██▏       | 21.1M/97.8M [00:09<00:26, 2.99MB/s] 22%|██▏       | 21.4M/97.8M [00:09<00:32, 2.47MB/s] 22%|██▏       | 21.9M/97.8M [00:09<00:34, 2.28MB/s] 23%|██▎       | 22.6M/97.8M [00:09<00:33, 2.32MB/s] 24%|██▍       | 23.3M/97.8M [00:10<00:31, 2.45MB/s] 24%|██▍       | 23.6M/97.8M [00:10<00:32, 2.38MB/s] 24%|██▍       | 23.9M/97.8M [00:10<00:34, 2.27MB/s] 25%|██▍       | 24.2M/97.8M [00:10<00:34, 2.22MB/s] 25%|██▍       | 24.4M/97.8M [00:10<00:34, 2.26MB/s] 25%|██▌       | 24.6M/97.8M [00:10<00:52, 1.46MB/s] 26%|██▌       | 25.0M/97.8M [00:11<00:44, 1.72MB/s] 26%|██▌       | 25.4M/97.8M [00:11<00:34, 2.19MB/s] 26%|██▋       | 25.8M/97.8M [00:11<00:30, 2.44MB/s] 27%|██▋       | 26.0M/97.8M [00:11<00:46, 1.61MB/s] 27%|██▋       | 26.3M/97.8M [00:11<00:45, 1.65MB/s] 28%|██▊       | 26.9M/97.8M [00:11<00:29, 2.52MB/s] 28%|██▊       | 27.2M/97.8M [00:12<00:29, 2.54MB/s] 28%|██▊       | 27.5M/97.8M [00:12<00:38, 1.90MB/s] 29%|██▉       | 28.1M/97.8M [00:12<00:35, 2.03MB/s] 29%|██▉       | 28.4M/97.8M [00:12<00:35, 2.02MB/s] 29%|██▉       | 28.8M/97.8M [00:12<00:33, 2.15MB/s] 30%|███       | 29.4M/97.8M [00:13<00:23, 2.99MB/s] 30%|███       | 29.8M/97.8M [00:13<00:23, 3.07MB/s] 31%|███       | 30.1M/97.8M [00:13<00:42, 1.69MB/s] 31%|███       | 30.4M/97.8M [00:13<00:39, 1.80MB/s] 32%|███▏      | 30.8M/97.8M [00:14<00:39, 1.80MB/s] 32%|███▏      | 31.4M/97.8M [00:14<00:37, 1.87MB/s] 33%|███▎      | 31.9M/97.8M [00:14<00:31, 2.21MB/s] 33%|███▎      | 32.6M/97.8M [00:14<00:25, 2.69MB/s] 34%|███▍      | 33.1M/97.8M [00:14<00:21, 3.15MB/s] 34%|███▍      | 33.5M/97.8M [00:14<00:23, 2.86MB/s] 35%|███▍      | 33.8M/97.8M [00:15<00:25, 2.65MB/s] 35%|███▍      | 34.2M/97.8M [00:15<00:23, 2.79MB/s] 35%|███▌      | 34.5M/97.8M [00:15<00:26, 2.48MB/s] 36%|███▌      | 34.8M/97.8M [00:15<00:29, 2.22MB/s] 36%|███▌      | 35.1M/97.8M [00:15<00:28, 2.31MB/s] 36%|███▌      | 35.3M/97.8M [00:15<00:29, 2.23MB/s] 36%|███▋      | 35.6M/97.8M [00:15<00:28, 2.33MB/s] 37%|███▋      | 35.9M/97.8M [00:16<00:26, 2.46MB/s] 37%|███▋      | 36.6M/97.8M [00:16<00:17, 3.56MB/s] 38%|███▊      | 37.0M/97.8M [00:16<00:19, 3.23MB/s] 38%|███▊      | 37.3M/97.8M [00:16<00:19, 3.25MB/s] 38%|███▊      | 37.6M/97.8M [00:16<00:23, 2.67MB/s] 39%|███▉      | 38.3M/97.8M [00:16<00:17, 3.56MB/s] 40%|███▉      | 38.7M/97.8M [00:16<00:21, 2.85MB/s] 40%|███▉      | 39.0M/97.8M [00:17<00:28, 2.20MB/s] 40%|████      | 39.5M/97.8M [00:17<00:21, 2.83MB/s] 41%|████      | 39.9M/97.8M [00:17<00:26, 2.31MB/s] 41%|████      | 40.2M/97.8M [00:17<00:24, 2.45MB/s] 41%|████▏     | 40.6M/97.8M [00:17<00:22, 2.63MB/s] 42%|████▏     | 40.9M/97.8M [00:17<00:22, 2.71MB/s] 42%|████▏     | 41.1M/97.8M [00:18<00:23, 2.53MB/s] 42%|████▏     | 41.5M/97.8M [00:18<00:21, 2.74MB/s] 43%|████▎     | 41.8M/97.8M [00:18<00:26, 2.21MB/s] 43%|████▎     | 42.4M/97.8M [00:18<00:22, 2.56MB/s] 44%|████▍     | 42.9M/97.8M [00:18<00:24, 2.32MB/s] 44%|████▍     | 43.4M/97.8M [00:19<00:25, 2.27MB/s] 45%|████▌     | 44.1M/97.8M [00:19<00:18, 3.03MB/s] 45%|████▌     | 44.4M/97.8M [00:19<00:22, 2.44MB/s] 46%|████▌     | 44.8M/97.8M [00:19<00:20, 2.70MB/s] 46%|████▋     | 45.2M/97.8M [00:19<00:23, 2.30MB/s] 47%|████▋     | 46.0M/97.8M [00:19<00:19, 2.76MB/s] 47%|████▋     | 46.4M/97.8M [00:20<00:18, 2.96MB/s] 48%|████▊     | 46.7M/97.8M [00:20<00:26, 2.00MB/s] 48%|████▊     | 47.1M/97.8M [00:20<00:23, 2.26MB/s] 48%|████▊     | 47.4M/97.8M [00:20<00:22, 2.34MB/s] 49%|████▉     | 47.7M/97.8M [00:20<00:22, 2.36MB/s] 49%|████▉     | 48.0M/97.8M [00:20<00:21, 2.48MB/s] 50%|████▉     | 48.5M/97.8M [00:21<00:16, 3.08MB/s] 50%|█████     | 48.9M/97.8M [00:21<00:15, 3.30MB/s] 50%|█████     | 49.2M/97.8M [00:21<00:21, 2.33MB/s] 51%|█████     | 49.8M/97.8M [00:21<00:16, 3.09MB/s] 51%|█████▏    | 50.2M/97.8M [00:21<00:15, 3.13MB/s] 52%|█████▏    | 50.6M/97.8M [00:21<00:16, 3.08MB/s] 52%|█████▏    | 50.9M/97.8M [00:21<00:19, 2.58MB/s] 52%|█████▏    | 51.2M/97.8M [00:22<00:18, 2.64MB/s] 53%|█████▎    | 51.5M/97.8M [00:22<00:18, 2.62MB/s] 53%|█████▎    | 51.8M/97.8M [00:22<00:17, 2.83MB/s] 53%|█████▎    | 52.1M/97.8M [00:22<00:22, 2.12MB/s] 54%|█████▎    | 52.4M/97.8M [00:22<00:24, 1.96MB/s] 54%|█████▍    | 52.6M/97.8M [00:22<00:30, 1.55MB/s] 54%|█████▍    | 52.9M/97.8M [00:23<00:26, 1.79MB/s] 54%|█████▍    | 53.1M/97.8M [00:23<00:25, 1.85MB/s] 55%|█████▍    | 53.4M/97.8M [00:23<00:24, 1.92MB/s] 55%|█████▌    | 54.1M/97.8M [00:23<00:15, 3.00MB/s] 56%|█████▌    | 54.4M/97.8M [00:24<00:30, 1.48MB/s] 56%|█████▋    | 55.1M/97.8M [00:24<00:20, 2.21MB/s] 57%|█████▋    | 55.5M/97.8M [00:24<00:30, 1.46MB/s] 57%|█████▋    | 55.8M/97.8M [00:24<00:30, 1.45MB/s] 58%|█████▊    | 56.3M/97.8M [00:25<00:28, 1.53MB/s] 58%|█████▊    | 56.5M/97.8M [00:25<00:27, 1.58MB/s] 58%|█████▊    | 56.7M/97.8M [00:25<00:27, 1.59MB/s] 59%|█████▊    | 57.4M/97.8M [00:25<00:17, 2.40MB/s] 59%|█████▉    | 57.7M/97.8M [00:25<00:16, 2.62MB/s] 59%|█████▉    | 58.0M/97.8M [00:25<00:15, 2.77MB/s] 60%|█████▉    | 58.3M/97.8M [00:25<00:17, 2.35MB/s] 60%|█████▉    | 58.6M/97.8M [00:26<00:17, 2.36MB/s] 60%|██████    | 58.9M/97.8M [00:26<00:16, 2.43MB/s] 60%|██████    | 59.1M/97.8M [00:26<00:16, 2.41MB/s] 61%|██████    | 59.5M/97.8M [00:26<00:15, 2.56MB/s] 61%|██████    | 59.7M/97.8M [00:26<00:20, 1.93MB/s] 61%|██████▏   | 60.1M/97.8M [00:26<00:17, 2.25MB/s] 62%|██████▏   | 60.4M/97.8M [00:26<00:18, 2.15MB/s] 62%|██████▏   | 60.7M/97.8M [00:27<00:16, 2.38MB/s] 62%|██████▏   | 60.9M/97.8M [00:27<00:19, 2.02MB/s] 63%|██████▎   | 61.2M/97.8M [00:27<00:17, 2.23MB/s] 63%|██████▎   | 61.5M/97.8M [00:27<00:15, 2.46MB/s] 63%|██████▎   | 61.8M/97.8M [00:27<00:14, 2.54MB/s] 64%|██████▎   | 62.1M/97.8M [00:27<00:14, 2.62MB/s] 64%|██████▍   | 62.4M/97.8M [00:27<00:22, 1.67MB/s] 64%|██████▍   | 62.6M/97.8M [00:28<00:26, 1.39MB/s] 65%|██████▍   | 63.2M/97.8M [00:28<00:15, 2.32MB/s] 65%|██████▌   | 63.6M/97.8M [00:28<00:17, 2.09MB/s] 66%|██████▌   | 64.1M/97.8M [00:28<00:12, 2.79MB/s] 66%|██████▌   | 64.5M/97.8M [00:28<00:12, 2.81MB/s] 66%|██████▋   | 64.8M/97.8M [00:28<00:13, 2.65MB/s] 67%|██████▋   | 65.1M/97.8M [00:29<00:17, 2.02MB/s] 67%|██████▋   | 65.5M/97.8M [00:29<00:14, 2.41MB/s] 67%|██████▋   | 65.9M/97.8M [00:29<00:16, 2.08MB/s] 68%|██████▊   | 66.1M/97.8M [00:29<00:15, 2.13MB/s] 68%|██████▊   | 66.9M/97.8M [00:29<00:10, 3.21MB/s] 69%|██████▉   | 67.2M/97.8M [00:30<00:12, 2.55MB/s] 69%|██████▉   | 67.7M/97.8M [00:30<00:15, 1.98MB/s] 70%|██████▉   | 68.0M/97.8M [00:30<00:18, 1.69MB/s] 71%|███████   | 69.0M/97.8M [00:30<00:13, 2.28MB/s] 71%|███████   | 69.4M/97.8M [00:31<00:12, 2.32MB/s] 72%|███████▏  | 70.0M/97.8M [00:31<00:09, 2.97MB/s] 72%|███████▏  | 70.4M/97.8M [00:31<00:10, 2.62MB/s] 72%|███████▏  | 70.9M/97.8M [00:31<00:09, 2.98MB/s] 73%|███████▎  | 71.2M/97.8M [00:31<00:09, 3.07MB/s] 73%|███████▎  | 71.5M/97.8M [00:31<00:11, 2.30MB/s] 74%|███████▎  | 72.0M/97.8M [00:32<00:12, 2.22MB/s] 74%|███████▍  | 72.3M/97.8M [00:32<00:13, 1.91MB/s] 74%|███████▍  | 72.7M/97.8M [00:32<00:11, 2.31MB/s] 75%|███████▍  | 73.3M/97.8M [00:32<00:11, 2.27MB/s] 76%|███████▌  | 73.8M/97.8M [00:32<00:08, 2.86MB/s] 76%|███████▌  | 74.2M/97.8M [00:32<00:08, 2.94MB/s] 76%|███████▌  | 74.5M/97.8M [00:33<00:11, 2.07MB/s] 77%|███████▋  | 75.1M/97.8M [00:33<00:10, 2.26MB/s] 78%|███████▊  | 75.8M/97.8M [00:33<00:09, 2.40MB/s] 78%|███████▊  | 76.4M/97.8M [00:34<00:09, 2.30MB/s] 79%|███████▉  | 77.0M/97.8M [00:34<00:09, 2.27MB/s] 79%|███████▉  | 77.3M/97.8M [00:34<00:09, 2.26MB/s] 79%|███████▉  | 77.5M/97.8M [00:34<00:10, 2.03MB/s] 80%|███████▉  | 78.2M/97.8M [00:34<00:07, 2.77MB/s] 80%|████████  | 78.5M/97.8M [00:35<00:08, 2.41MB/s] 81%|████████  | 78.8M/97.8M [00:35<00:14, 1.42MB/s] 81%|████████  | 79.1M/97.8M [00:35<00:14, 1.33MB/s] 81%|████████  | 79.3M/97.8M [00:35<00:13, 1.45MB/s] 81%|████████▏ | 79.6M/97.8M [00:36<00:12, 1.58MB/s] 82%|████████▏ | 79.8M/97.8M [00:36<00:11, 1.61MB/s] 82%|████████▏ | 79.9M/97.8M [00:36<00:12, 1.45MB/s] 82%|████████▏ | 80.2M/97.8M [00:36<00:14, 1.23MB/s] 82%|████████▏ | 80.5M/97.8M [00:36<00:11, 1.63MB/s] 83%|████████▎ | 81.0M/97.8M [00:36<00:07, 2.30MB/s] 83%|████████▎ | 81.3M/97.8M [00:36<00:07, 2.45MB/s] 83%|████████▎ | 81.6M/97.8M [00:37<00:06, 2.51MB/s] 84%|████████▍ | 81.9M/97.8M [00:37<00:06, 2.45MB/s] 84%|████████▍ | 82.2M/97.8M [00:37<00:06, 2.48MB/s] 84%|████████▍ | 82.5M/97.8M [00:37<00:06, 2.63MB/s] 85%|████████▍ | 82.8M/97.8M [00:37<00:08, 1.85MB/s] 85%|████████▍ | 83.0M/97.8M [00:37<00:08, 1.84MB/s] 85%|████████▌ | 83.4M/97.8M [00:38<00:09, 1.64MB/s] 86%|████████▌ | 83.7M/97.8M [00:38<00:07, 1.87MB/s] 86%|████████▌ | 83.9M/97.8M [00:38<00:08, 1.63MB/s] 86%|████████▌ | 84.2M/97.8M [00:38<00:08, 1.61MB/s] 87%|████████▋ | 84.9M/97.8M [00:38<00:05, 2.48MB/s] 87%|████████▋ | 85.2M/97.8M [00:38<00:05, 2.62MB/s] 88%|████████▊ | 85.6M/97.8M [00:38<00:04, 2.83MB/s] 88%|████████▊ | 85.9M/97.8M [00:39<00:04, 2.73MB/s] 88%|████████▊ | 86.2M/97.8M [00:39<00:05, 2.16MB/s] 88%|████████▊ | 86.4M/97.8M [00:39<00:06, 1.81MB/s] 89%|████████▉ | 87.0M/97.8M [00:39<00:04, 2.62MB/s] 89%|████████▉ | 87.3M/97.8M [00:39<00:04, 2.36MB/s] 90%|████████▉ | 87.9M/97.8M [00:39<00:03, 3.04MB/s] 90%|█████████ | 88.2M/97.8M [00:40<00:04, 2.40MB/s] 91%|█████████ | 88.7M/97.8M [00:40<00:03, 2.87MB/s] 91%|█████████ | 89.0M/97.8M [00:40<00:03, 2.71MB/s] 91%|█████████▏| 89.3M/97.8M [00:40<00:03, 2.70MB/s] 92%|█████████▏| 89.6M/97.8M [00:40<00:04, 2.08MB/s] 92%|█████████▏| 89.9M/97.8M [00:40<00:03, 2.06MB/s] 92%|█████████▏| 90.3M/97.8M [00:41<00:03, 2.44MB/s] 93%|█████████▎| 90.7M/97.8M [00:41<00:02, 2.50MB/s] 93%|█████████▎| 91.2M/97.8M [00:41<00:02, 3.32MB/s] 94%|█████████▎| 91.6M/97.8M [00:41<00:02, 2.44MB/s] 94%|█████████▍| 92.1M/97.8M [00:41<00:02, 2.39MB/s] 95%|█████████▍| 92.7M/97.8M [00:42<00:01, 2.74MB/s] 95%|█████████▌| 93.1M/97.8M [00:42<00:01, 2.82MB/s] 96%|█████████▌| 93.5M/97.8M [00:42<00:01, 3.25MB/s] 96%|█████████▌| 93.9M/97.8M [00:42<00:01, 2.79MB/s] 96%|█████████▋| 94.2M/97.8M [00:42<00:01, 2.84MB/s] 97%|█████████▋| 94.5M/97.8M [00:42<00:01, 2.06MB/s] 97%|█████████▋| 95.1M/97.8M [00:42<00:01, 2.76MB/s] 98%|█████████▊| 95.4M/97.8M [00:43<00:00, 2.89MB/s] 98%|█████████▊| 95.8M/97.8M [00:43<00:00, 2.20MB/s] 98%|█████████▊| 96.2M/97.8M [00:43<00:00, 2.47MB/s] 99%|█████████▉| 96.8M/97.8M [00:43<00:00, 3.16MB/s] 99%|█████████▉| 97.2M/97.8M [00:43<00:00, 2.30MB/s]100%|█████████▉| 97.7M/97.8M [00:43<00:00, 2.81MB/s]100%|██████████| 97.8M/97.8M [00:43<00:00, 2.33MB/s]
+2026-07-25 03:28:57,784 - mmcv - WARNING - The model and loaded state dict do not match exactly
+
+unexpected key in source state_dict: fc.weight, fc.bias
+
+2026-07-25 03:28:57,798 - mmdet - INFO - initialize FPN with init_cfg {'type': 'Xavier', 'layer': 'Conv2d', 'distribution': 'uniform'}
+2026-07-25 03:28:57,816 - mmdet - INFO - initialize ATSSQHead with init_cfg {'type': 'Normal', 'layer': 'Conv2d', 'std': 0.01, 'override': {'type': 'Normal', 'name': 'atss_cls', 'std': 0.01, 'bias_prob': 0.01}}
+2026-07-25 03:28:57,838 - mmdet - INFO - initialize ResNet with init_cfg {'type': 'Pretrained', 'checkpoint': 'torchvision://resnet50'}
+2026-07-25 03:28:57,840 - mmcv - INFO - load model from: torchvision://resnet50
+2026-07-25 03:28:57,840 - mmcv - INFO - load checkpoint from torchvision path: torchvision://resnet50
+2026-07-25 03:28:57,911 - mmcv - WARNING - The model and loaded state dict do not match exactly
+
+unexpected key in source state_dict: fc.weight, fc.bias
+
+2026-07-25 03:28:57,922 - mmdet - INFO - initialize QFDetPreHead with init_cfg {'type': 'Normal', 'layer': 'Conv2d', 'std': 0.01, 'override': {'type': 'Normal', 'name': 'atss_cls', 'std': 0.01, 'bias_prob': 0.01}}
+2026-07-25 03:29:00,336 - mmdet - INFO - Automatic scaling of learning rate (LR) has been disabled.
+2026-07-25 03:29:00,362 - mmdet - INFO - load checkpoint from local path: /workspace/weights/epoch_11_qfdet_star_vtuav.pth
+2026-07-25 03:29:03,409 - mmdet - WARNING - The model and loaded state dict do not match exactly
+
+unexpected key in source state_dict: fuse.fusion_cat2.conv1x1.weight, fuse.fusion_cat2.conv1x1.bias, fuse.fusion_gated.t_conv1x1.weight, fuse.fusion_gated.t_conv1x1.bias, fuse.fusion_gated.v_conv1x1.weight, fuse.fusion_gated.v_conv1x1.bias
+
+missing keys in source state_dict: cmaf.rgb_gates.0.attn_scale, cmaf.rgb_gates.0.fc.0.weight, cmaf.rgb_gates.0.fc.2.weight, cmaf.rgb_gates.1.attn_scale, cmaf.rgb_gates.1.fc.0.weight, cmaf.rgb_gates.1.fc.2.weight, cmaf.rgb_gates.2.attn_scale, cmaf.rgb_gates.2.fc.0.weight, cmaf.rgb_gates.2.fc.2.weight, cmaf.rgb_gates.3.attn_scale, cmaf.rgb_gates.3.fc.0.weight, cmaf.rgb_gates.3.fc.2.weight, cmaf.rgb_gates.4.attn_scale, cmaf.rgb_gates.4.fc.0.weight, cmaf.rgb_gates.4.fc.2.weight, cmaf.tir_gates.0.attn_scale, cmaf.tir_gates.0.fc.0.weight, cmaf.tir_gates.0.fc.2.weight, cmaf.tir_gates.1.attn_scale, cmaf.tir_gates.1.fc.0.weight, cmaf.tir_gates.1.fc.2.weight, cmaf.tir_gates.2.attn_scale, cmaf.tir_gates.2.fc.0.weight, cmaf.tir_gates.2.fc.2.weight, cmaf.tir_gates.3.attn_scale, cmaf.tir_gates.3.fc.0.weight, cmaf.tir_gates.3.fc.2.weight, cmaf.tir_gates.4.attn_scale, cmaf.tir_gates.4.fc.0.weight, cmaf.tir_gates.4.fc.2.weight
+
+2026-07-25 03:29:03,438 - mmdet - INFO - Start running, host: root@5804294ba840, work_dir: /workspace/weights/fusion_cmaf_finetune
+2026-07-25 03:29:03,439 - mmdet - INFO - Hooks will be executed in the following order:
+before_run:
+(VERY_HIGH   ) StepLrUpdaterHook                  
+(NORMAL      ) CheckpointHook                     
+(LOW         ) EvalHook                           
+(VERY_LOW    ) TextLoggerHook                     
+ -------------------- 
+before_train_epoch:
+(VERY_HIGH   ) StepLrUpdaterHook                  
+(NORMAL      ) NumClassCheckHook                  
+(LOW         ) IterTimerHook                      
+(LOW         ) EvalHook                           
+(VERY_LOW    ) TextLoggerHook                     
+ -------------------- 
+before_train_iter:
+(VERY_HIGH   ) StepLrUpdaterHook                  
+(LOW         ) IterTimerHook                      
+(LOW         ) EvalHook                           
+ -------------------- 
+after_train_iter:
+(ABOVE_NORMAL) OptimizerHook                      
+(NORMAL      ) CheckpointHook                     
+(LOW         ) IterTimerHook                      
+(LOW         ) EvalHook                           
+(VERY_LOW    ) TextLoggerHook                     
+ -------------------- 
+after_train_epoch:
+(NORMAL      ) CheckpointHook                     
+(LOW         ) EvalHook                           
+(VERY_LOW    ) TextLoggerHook                     
+ -------------------- 
+before_val_epoch:
+(NORMAL      ) NumClassCheckHook                  
+(LOW         ) IterTimerHook                      
+(VERY_LOW    ) TextLoggerHook                     
+ -------------------- 
+before_val_iter:
+(LOW         ) IterTimerHook                      
+ -------------------- 
+after_val_iter:
+(LOW         ) IterTimerHook                      
+ -------------------- 
+after_val_epoch:
+(VERY_LOW    ) TextLoggerHook                     
+ -------------------- 
+after_run:
+(VERY_LOW    ) TextLoggerHook                     
+ -------------------- 
+2026-07-25 03:29:03,440 - mmdet - INFO - workflow: [('train', 1)], max: 250 iters
+2026-07-25 03:29:03,441 - mmdet - INFO - Checkpoints will be saved to /workspace/weights/fusion_cmaf_finetune by HardDiskBackend.
+2026-07-25 03:29:26,005 - mmdet - INFO - Iter [50/250]	lr: 9.890e-07, eta: 0:01:30, time: 0.451, data_time: 0.047, memory: 1055, loss_cls_pre: 0.1166, loss_bbox_pre: 0.4653, loss_centerness_pre: 0.5437, loss_quality_pre: 0.0039, loss_cls: 0.0655, loss_bbox: 0.4921, loss_centerness: 0.8253, loss: 2.5124, grad_norm: 0.5224
+2026-07-25 03:29:43,093 - mmdet - INFO - Iter [100/250]	lr: 1.988e-06, eta: 0:00:59, time: 0.342, data_time: 0.035, memory: 1055, loss_cls_pre: 0.1489, loss_bbox_pre: 0.5121, loss_centerness_pre: 0.5365, loss_quality_pre: 0.0025, loss_cls: 0.0822, loss_bbox: 0.5002, loss_centerness: 0.8026, loss: 2.5849, grad_norm: 0.6192
+2026-07-25 03:30:00,171 - mmdet - INFO - Iter [150/250]	lr: 2.987e-06, eta: 0:00:37, time: 0.342, data_time: 0.033, memory: 1055, loss_cls_pre: 0.1441, loss_bbox_pre: 0.4963, loss_centerness_pre: 0.5404, loss_quality_pre: 0.0022, loss_cls: 0.0840, loss_bbox: 0.4957, loss_centerness: 0.8292, loss: 2.5919, grad_norm: 0.6960
+2026-07-25 03:30:17,162 - mmdet - INFO - Iter [200/250]	lr: 3.986e-06, eta: 0:00:18, time: 0.340, data_time: 0.033, memory: 1055, loss_cls_pre: 0.1451, loss_bbox_pre: 0.4864, loss_centerness_pre: 0.5393, loss_quality_pre: 0.0023, loss_cls: 0.0990, loss_bbox: 0.5062, loss_centerness: 0.8473, loss: 2.6256, grad_norm: 0.6764
+2026-07-25 03:30:34,174 - mmdet - INFO - Saving checkpoint at 250 iterations
+2026-07-25 03:30:37,599 - mmdet - INFO - Iter [250/250]	lr: 4.985e-06, eta: 0:00:00, time: 0.409, data_time: 0.034, memory: 1055, loss_cls_pre: 0.1316, loss_bbox_pre: 0.4853, loss_centerness_pre: 0.5297, loss_quality_pre: 0.0021, loss_cls: 0.0589, loss_bbox: 0.4618, loss_centerness: 0.8136, loss: 2.4830, grad_norm: 0.6116
+loading annotations into memory...
+Done (t=0.05s)
+creating index...
+index created!
+loading annotations into memory...
+Done (t=0.02s)
+creating index...
+index created!
+[                                                  ] 0/300, elapsed: 0s, ETA:[                                 ] 1/300, 2.7 task/s, elapsed: 0s, ETA:   111s[                                 ] 2/300, 3.5 task/s, elapsed: 1s, ETA:    86s[                                 ] 3/300, 3.8 task/s, elapsed: 1s, ETA:    77s[                                 ] 4/300, 4.1 task/s, elapsed: 1s, ETA:    73s[                                 ] 5/300, 4.2 task/s, elapsed: 1s, ETA:    70s[                                 ] 6/300, 4.3 task/s, elapsed: 1s, ETA:    68s[                                 ] 7/300, 4.4 task/s, elapsed: 2s, ETA:    67s[                                 ] 8/300, 4.4 task/s, elapsed: 2s, ETA:    66s[                                 ] 9/300, 4.5 task/s, elapsed: 2s, ETA:    65s[>                               ] 10/300, 4.5 task/s, elapsed: 2s, ETA:    64s[>                               ] 11/300, 4.5 task/s, elapsed: 2s, ETA:    64s[>                               ] 12/300, 4.6 task/s, elapsed: 3s, ETA:    63s[>                               ] 13/300, 4.6 task/s, elapsed: 3s, ETA:    62s[>                               ] 14/300, 4.6 task/s, elapsed: 3s, ETA:    62s[>                               ] 15/300, 4.6 task/s, elapsed: 3s, ETA:    62s[>                               ] 16/300, 4.6 task/s, elapsed: 3s, ETA:    61s[>                               ] 17/300, 4.7 task/s, elapsed: 4s, ETA:    61s[>                               ] 18/300, 4.7 task/s, elapsed: 4s, ETA:    60s[>>                              ] 19/300, 4.7 task/s, elapsed: 4s, ETA:    60s[>>                              ] 20/300, 4.7 task/s, elapsed: 4s, ETA:    60s[>>                              ] 21/300, 4.7 task/s, elapsed: 4s, ETA:    59s[>>                              ] 22/300, 4.7 task/s, elapsed: 5s, ETA:    59s[>>                              ] 23/300, 4.7 task/s, elapsed: 5s, ETA:    59s[>>                              ] 24/300, 4.7 task/s, elapsed: 5s, ETA:    58s[>>                              ] 25/300, 4.7 task/s, elapsed: 5s, ETA:    58s[>>                              ] 26/300, 4.7 task/s, elapsed: 5s, ETA:    58s[>>                              ] 27/300, 4.7 task/s, elapsed: 6s, ETA:    58s[>>                              ] 28/300, 4.7 task/s, elapsed: 6s, ETA:    57s[>>>                             ] 29/300, 4.8 task/s, elapsed: 6s, ETA:    57s[>>>                             ] 30/300, 4.8 task/s, elapsed: 6s, ETA:    57s[>>>                             ] 31/300, 4.8 task/s, elapsed: 7s, ETA:    57s[>>>                             ] 32/300, 4.8 task/s, elapsed: 7s, ETA:    56s[>>>                             ] 33/300, 4.8 task/s, elapsed: 7s, ETA:    56s[>>>                             ] 34/300, 4.8 task/s, elapsed: 7s, ETA:    56s[>>>                             ] 35/300, 4.8 task/s, elapsed: 7s, ETA:    55s[>>>                             ] 36/300, 4.8 task/s, elapsed: 8s, ETA:    55s[>>>                             ] 37/300, 4.8 task/s, elapsed: 8s, ETA:    55s[>>>>                            ] 38/300, 4.8 task/s, elapsed: 8s, ETA:    55s[>>>>                            ] 39/300, 4.8 task/s, elapsed: 8s, ETA:    55s[>>>>                            ] 40/300, 4.8 task/s, elapsed: 8s, ETA:    54s[>>>>                            ] 41/300, 4.8 task/s, elapsed: 9s, ETA:    54s[>>>>                            ] 42/300, 4.8 task/s, elapsed: 9s, ETA:    54s[>>>>                            ] 43/300, 4.8 task/s, elapsed: 9s, ETA:    54s[>>>>                            ] 44/300, 4.8 task/s, elapsed: 9s, ETA:    53s[>>>>                            ] 45/300, 4.8 task/s, elapsed: 9s, ETA:    53s[>>>>                           ] 46/300, 4.8 task/s, elapsed: 10s, ETA:    53s[>>>>                           ] 47/300, 4.8 task/s, elapsed: 10s, ETA:    53s[>>>>                           ] 48/300, 4.8 task/s, elapsed: 10s, ETA:    52s[>>>>>                          ] 49/300, 4.8 task/s, elapsed: 10s, ETA:    52s[>>>>>                          ] 50/300, 4.8 task/s, elapsed: 10s, ETA:    52s[>>>>>                          ] 51/300, 4.8 task/s, elapsed: 11s, ETA:    52s[>>>>>                          ] 52/300, 4.8 task/s, elapsed: 11s, ETA:    52s[>>>>>                          ] 53/300, 4.8 task/s, elapsed: 11s, ETA:    51s[>>>>>                          ] 54/300, 4.8 task/s, elapsed: 11s, ETA:    51s[>>>>>                          ] 55/300, 4.8 task/s, elapsed: 11s, ETA:    51s[>>>>>                          ] 56/300, 4.8 task/s, elapsed: 12s, ETA:    51s[>>>>>                          ] 57/300, 4.8 task/s, elapsed: 12s, ETA:    50s[>>>>>                          ] 58/300, 4.8 task/s, elapsed: 12s, ETA:    50s[>>>>>>                         ] 59/300, 4.8 task/s, elapsed: 12s, ETA:    50s[>>>>>>                         ] 60/300, 4.8 task/s, elapsed: 12s, ETA:    50s[>>>>>>                         ] 61/300, 4.8 task/s, elapsed: 13s, ETA:    50s[>>>>>>                         ] 62/300, 4.8 task/s, elapsed: 13s, ETA:    49s[>>>>>>                         ] 63/300, 4.8 task/s, elapsed: 13s, ETA:    49s[>>>>>>                         ] 64/300, 4.8 task/s, elapsed: 13s, ETA:    49s[>>>>>>                         ] 65/300, 4.8 task/s, elapsed: 13s, ETA:    49s[>>>>>>                         ] 66/300, 4.8 task/s, elapsed: 14s, ETA:    48s[>>>>>>                         ] 67/300, 4.8 task/s, elapsed: 14s, ETA:    48s[>>>>>>>                        ] 68/300, 4.8 task/s, elapsed: 14s, ETA:    48s[>>>>>>>                        ] 69/300, 4.8 task/s, elapsed: 14s, ETA:    48s[>>>>>>>                        ] 70/300, 4.8 task/s, elapsed: 14s, ETA:    48s[>>>>>>>                        ] 71/300, 4.8 task/s, elapsed: 15s, ETA:    47s[>>>>>>>                        ] 72/300, 4.8 task/s, elapsed: 15s, ETA:    47s[>>>>>>>                        ] 73/300, 4.8 task/s, elapsed: 15s, ETA:    47s[>>>>>>>                        ] 74/300, 4.8 task/s, elapsed: 15s, ETA:    47s[>>>>>>>                        ] 75/300, 4.8 task/s, elapsed: 16s, ETA:    47s[>>>>>>>                        ] 76/300, 4.8 task/s, elapsed: 16s, ETA:    46s[>>>>>>>                        ] 77/300, 4.8 task/s, elapsed: 16s, ETA:    46s[>>>>>>>>                       ] 78/300, 4.8 task/s, elapsed: 16s, ETA:    46s[>>>>>>>>                       ] 79/300, 4.8 task/s, elapsed: 16s, ETA:    46s[>>>>>>>>                       ] 80/300, 4.8 task/s, elapsed: 17s, ETA:    46s[>>>>>>>>                       ] 81/300, 4.8 task/s, elapsed: 17s, ETA:    45s[>>>>>>>>                       ] 82/300, 4.8 task/s, elapsed: 17s, ETA:    45s[>>>>>>>>                       ] 83/300, 4.8 task/s, elapsed: 17s, ETA:    45s[>>>>>>>>                       ] 84/300, 4.8 task/s, elapsed: 17s, ETA:    45s[>>>>>>>>                       ] 85/300, 4.8 task/s, elapsed: 18s, ETA:    44s[>>>>>>>>                       ] 86/300, 4.8 task/s, elapsed: 18s, ETA:    44s[>>>>>>>>                       ] 87/300, 4.8 task/s, elapsed: 18s, ETA:    44s[>>>>>>>>>                      ] 88/300, 4.8 task/s, elapsed: 18s, ETA:    44s[>>>>>>>>>                      ] 89/300, 4.8 task/s, elapsed: 18s, ETA:    44s[>>>>>>>>>                      ] 90/300, 4.8 task/s, elapsed: 19s, ETA:    43s[>>>>>>>>>                      ] 91/300, 4.8 task/s, elapsed: 19s, ETA:    43s[>>>>>>>>>                      ] 92/300, 4.8 task/s, elapsed: 19s, ETA:    43s[>>>>>>>>>                      ] 93/300, 4.8 task/s, elapsed: 19s, ETA:    43s[>>>>>>>>>                      ] 94/300, 4.8 task/s, elapsed: 19s, ETA:    43s[>>>>>>>>>                      ] 95/300, 4.8 task/s, elapsed: 20s, ETA:    42s[>>>>>>>>>                      ] 96/300, 4.8 task/s, elapsed: 20s, ETA:    42s[>>>>>>>>>>                     ] 97/300, 4.8 task/s, elapsed: 20s, ETA:    42s[>>>>>>>>>>                     ] 98/300, 4.8 task/s, elapsed: 20s, ETA:    42s[>>>>>>>>>>                     ] 99/300, 4.8 task/s, elapsed: 20s, ETA:    41s[>>>>>>>>>>                    ] 100/300, 4.8 task/s, elapsed: 21s, ETA:    41s[>>>>>>>>>>                    ] 101/300, 4.8 task/s, elapsed: 21s, ETA:    41s[>>>>>>>>>>                    ] 102/300, 4.8 task/s, elapsed: 21s, ETA:    41s[>>>>>>>>>>                    ] 103/300, 4.8 task/s, elapsed: 21s, ETA:    41s[>>>>>>>>>>                    ] 104/300, 4.8 task/s, elapsed: 21s, ETA:    40s[>>>>>>>>>>                    ] 105/300, 4.8 task/s, elapsed: 22s, ETA:    40s[>>>>>>>>>>                    ] 106/300, 4.8 task/s, elapsed: 22s, ETA:    40s[>>>>>>>>>>                    ] 107/300, 4.8 task/s, elapsed: 22s, ETA:    40s[>>>>>>>>>>                    ] 108/300, 4.8 task/s, elapsed: 22s, ETA:    40s[>>>>>>>>>>                    ] 109/300, 4.8 task/s, elapsed: 23s, ETA:    39s[>>>>>>>>>>>                   ] 110/300, 4.8 task/s, elapsed: 23s, ETA:    39s[>>>>>>>>>>>                   ] 111/300, 4.8 task/s, elapsed: 23s, ETA:    39s[>>>>>>>>>>>                   ] 112/300, 4.8 task/s, elapsed: 23s, ETA:    39s[>>>>>>>>>>>                   ] 113/300, 4.8 task/s, elapsed: 23s, ETA:    39s[>>>>>>>>>>>                   ] 114/300, 4.8 task/s, elapsed: 24s, ETA:    38s[>>>>>>>>>>>                   ] 115/300, 4.8 task/s, elapsed: 24s, ETA:    38s[>>>>>>>>>>>                   ] 116/300, 4.8 task/s, elapsed: 24s, ETA:    38s[>>>>>>>>>>>                   ] 117/300, 4.8 task/s, elapsed: 24s, ETA:    38s[>>>>>>>>>>>                   ] 118/300, 4.8 task/s, elapsed: 24s, ETA:    38s[>>>>>>>>>>>                   ] 119/300, 4.8 task/s, elapsed: 25s, ETA:    37s[>>>>>>>>>>>>                  ] 120/300, 4.8 task/s, elapsed: 25s, ETA:    37s[>>>>>>>>>>>>                  ] 121/300, 4.8 task/s, elapsed: 25s, ETA:    37s[>>>>>>>>>>>>                  ] 122/300, 4.9 task/s, elapsed: 25s, ETA:    37s[>>>>>>>>>>>>                  ] 123/300, 4.9 task/s, elapsed: 25s, ETA:    36s[>>>>>>>>>>>>                  ] 124/300, 4.9 task/s, elapsed: 26s, ETA:    36s[>>>>>>>>>>>>                  ] 125/300, 4.9 task/s, elapsed: 26s, ETA:    36s[>>>>>>>>>>>>                  ] 126/300, 4.9 task/s, elapsed: 26s, ETA:    36s[>>>>>>>>>>>>                  ] 127/300, 4.9 task/s, elapsed: 26s, ETA:    36s[>>>>>>>>>>>>                  ] 128/300, 4.9 task/s, elapsed: 26s, ETA:    35s[>>>>>>>>>>>>                  ] 129/300, 4.9 task/s, elapsed: 27s, ETA:    35s[>>>>>>>>>>>>>                 ] 130/300, 4.9 task/s, elapsed: 27s, ETA:    35s[>>>>>>>>>>>>>                 ] 131/300, 4.9 task/s, elapsed: 27s, ETA:    35s[>>>>>>>>>>>>>                 ] 132/300, 4.9 task/s, elapsed: 27s, ETA:    35s[>>>>>>>>>>>>>                 ] 133/300, 4.9 task/s, elapsed: 27s, ETA:    34s[>>>>>>>>>>>>>                 ] 134/300, 4.9 task/s, elapsed: 28s, ETA:    34s[>>>>>>>>>>>>>                 ] 135/300, 4.9 task/s, elapsed: 28s, ETA:    34s[>>>>>>>>>>>>>                 ] 136/300, 4.9 task/s, elapsed: 28s, ETA:    34s[>>>>>>>>>>>>>                 ] 137/300, 4.9 task/s, elapsed: 28s, ETA:    34s[>>>>>>>>>>>>>                 ] 138/300, 4.9 task/s, elapsed: 28s, ETA:    33s[>>>>>>>>>>>>>                 ] 139/300, 4.9 task/s, elapsed: 29s, ETA:    33s[>>>>>>>>>>>>>>                ] 140/300, 4.9 task/s, elapsed: 29s, ETA:    33s[>>>>>>>>>>>>>>                ] 141/300, 4.9 task/s, elapsed: 29s, ETA:    33s[>>>>>>>>>>>>>>                ] 142/300, 4.9 task/s, elapsed: 29s, ETA:    32s[>>>>>>>>>>>>>>                ] 143/300, 4.9 task/s, elapsed: 29s, ETA:    32s[>>>>>>>>>>>>>>                ] 144/300, 4.9 task/s, elapsed: 30s, ETA:    32s[>>>>>>>>>>>>>>                ] 145/300, 4.9 task/s, elapsed: 30s, ETA:    32s[>>>>>>>>>>>>>>                ] 146/300, 4.9 task/s, elapsed: 30s, ETA:    32s[>>>>>>>>>>>>>>                ] 147/300, 4.9 task/s, elapsed: 30s, ETA:    31s[>>>>>>>>>>>>>>                ] 148/300, 4.9 task/s, elapsed: 30s, ETA:    31s[>>>>>>>>>>>>>>                ] 149/300, 4.9 task/s, elapsed: 31s, ETA:    31s[>>>>>>>>>>>>>>>               ] 150/300, 4.9 task/s, elapsed: 31s, ETA:    31s[>>>>>>>>>>>>>>>               ] 151/300, 4.9 task/s, elapsed: 31s, ETA:    31s[>>>>>>>>>>>>>>>               ] 152/300, 4.9 task/s, elapsed: 31s, ETA:    30s[>>>>>>>>>>>>>>>               ] 153/300, 4.9 task/s, elapsed: 31s, ETA:    30s[>>>>>>>>>>>>>>>               ] 154/300, 4.9 task/s, elapsed: 32s, ETA:    30s[>>>>>>>>>>>>>>>               ] 155/300, 4.9 task/s, elapsed: 32s, ETA:    30s[>>>>>>>>>>>>>>>               ] 156/300, 4.9 task/s, elapsed: 32s, ETA:    30s[>>>>>>>>>>>>>>>               ] 157/300, 4.9 task/s, elapsed: 32s, ETA:    29s[>>>>>>>>>>>>>>>               ] 158/300, 4.9 task/s, elapsed: 32s, ETA:    29s[>>>>>>>>>>>>>>>               ] 159/300, 4.9 task/s, elapsed: 33s, ETA:    29s[>>>>>>>>>>>>>>>>              ] 160/300, 4.9 task/s, elapsed: 33s, ETA:    29s[>>>>>>>>>>>>>>>>              ] 161/300, 4.9 task/s, elapsed: 33s, ETA:    29s[>>>>>>>>>>>>>>>>              ] 162/300, 4.9 task/s, elapsed: 33s, ETA:    28s[>>>>>>>>>>>>>>>>              ] 163/300, 4.9 task/s, elapsed: 33s, ETA:    28s[>>>>>>>>>>>>>>>>              ] 164/300, 4.9 task/s, elapsed: 34s, ETA:    28s[>>>>>>>>>>>>>>>>              ] 165/300, 4.9 task/s, elapsed: 34s, ETA:    28s[>>>>>>>>>>>>>>>>              ] 166/300, 4.9 task/s, elapsed: 34s, ETA:    28s[>>>>>>>>>>>>>>>>              ] 167/300, 4.9 task/s, elapsed: 34s, ETA:    27s[>>>>>>>>>>>>>>>>              ] 168/300, 4.9 task/s, elapsed: 35s, ETA:    27s[>>>>>>>>>>>>>>>>              ] 169/300, 4.9 task/s, elapsed: 35s, ETA:    27s[>>>>>>>>>>>>>>>>>             ] 170/300, 4.9 task/s, elapsed: 35s, ETA:    27s[>>>>>>>>>>>>>>>>>             ] 171/300, 4.9 task/s, elapsed: 35s, ETA:    27s[>>>>>>>>>>>>>>>>>             ] 172/300, 4.9 task/s, elapsed: 35s, ETA:    26s[>>>>>>>>>>>>>>>>>             ] 173/300, 4.9 task/s, elapsed: 36s, ETA:    26s[>>>>>>>>>>>>>>>>>             ] 174/300, 4.9 task/s, elapsed: 36s, ETA:    26s[>>>>>>>>>>>>>>>>>             ] 175/300, 4.9 task/s, elapsed: 36s, ETA:    26s[>>>>>>>>>>>>>>>>>             ] 176/300, 4.9 task/s, elapsed: 36s, ETA:    25s[>>>>>>>>>>>>>>>>>             ] 177/300, 4.9 task/s, elapsed: 36s, ETA:    25s[>>>>>>>>>>>>>>>>>             ] 178/300, 4.9 task/s, elapsed: 37s, ETA:    25s[>>>>>>>>>>>>>>>>>             ] 179/300, 4.9 task/s, elapsed: 37s, ETA:    25s[>>>>>>>>>>>>>>>>>>            ] 180/300, 4.9 task/s, elapsed: 37s, ETA:    25s[>>>>>>>>>>>>>>>>>>            ] 181/300, 4.9 task/s, elapsed: 37s, ETA:    24s[>>>>>>>>>>>>>>>>>>            ] 182/300, 4.9 task/s, elapsed: 37s, ETA:    24s[>>>>>>>>>>>>>>>>>>            ] 183/300, 4.9 task/s, elapsed: 38s, ETA:    24s[>>>>>>>>>>>>>>>>>>            ] 184/300, 4.9 task/s, elapsed: 38s, ETA:    24s[>>>>>>>>>>>>>>>>>>            ] 185/300, 4.9 task/s, elapsed: 38s, ETA:    24s[>>>>>>>>>>>>>>>>>>            ] 186/300, 4.9 task/s, elapsed: 38s, ETA:    23s[>>>>>>>>>>>>>>>>>>            ] 187/300, 4.9 task/s, elapsed: 38s, ETA:    23s[>>>>>>>>>>>>>>>>>>            ] 188/300, 4.9 task/s, elapsed: 39s, ETA:    23s[>>>>>>>>>>>>>>>>>>            ] 189/300, 4.9 task/s, elapsed: 39s, ETA:    23s[>>>>>>>>>>>>>>>>>>>           ] 190/300, 4.9 task/s, elapsed: 39s, ETA:    23s[>>>>>>>>>>>>>>>>>>>           ] 191/300, 4.9 task/s, elapsed: 39s, ETA:    22s[>>>>>>>>>>>>>>>>>>>           ] 192/300, 4.9 task/s, elapsed: 39s, ETA:    22s[>>>>>>>>>>>>>>>>>>>           ] 193/300, 4.9 task/s, elapsed: 40s, ETA:    22s[>>>>>>>>>>>>>>>>>>>           ] 194/300, 4.9 task/s, elapsed: 40s, ETA:    22s[>>>>>>>>>>>>>>>>>>>           ] 195/300, 4.9 task/s, elapsed: 40s, ETA:    22s[>>>>>>>>>>>>>>>>>>>           ] 196/300, 4.9 task/s, elapsed: 40s, ETA:    21s[>>>>>>>>>>>>>>>>>>>           ] 197/300, 4.9 task/s, elapsed: 40s, ETA:    21s[>>>>>>>>>>>>>>>>>>>           ] 198/300, 4.9 task/s, elapsed: 41s, ETA:    21s[>>>>>>>>>>>>>>>>>>>           ] 199/300, 4.9 task/s, elapsed: 41s, ETA:    21s[>>>>>>>>>>>>>>>>>>>>          ] 200/300, 4.9 task/s, elapsed: 41s, ETA:    21s[>>>>>>>>>>>>>>>>>>>>          ] 201/300, 4.9 task/s, elapsed: 41s, ETA:    20s[>>>>>>>>>>>>>>>>>>>>          ] 202/300, 4.9 task/s, elapsed: 41s, ETA:    20s[>>>>>>>>>>>>>>>>>>>>          ] 203/300, 4.9 task/s, elapsed: 42s, ETA:    20s[>>>>>>>>>>>>>>>>>>>>          ] 204/300, 4.9 task/s, elapsed: 42s, ETA:    20s[>>>>>>>>>>>>>>>>>>>>          ] 205/300, 4.9 task/s, elapsed: 42s, ETA:    19s[>>>>>>>>>>>>>>>>>>>>          ] 206/300, 4.9 task/s, elapsed: 42s, ETA:    19s[>>>>>>>>>>>>>>>>>>>>          ] 207/300, 4.9 task/s, elapsed: 42s, ETA:    19s[>>>>>>>>>>>>>>>>>>>>          ] 208/300, 4.9 task/s, elapsed: 43s, ETA:    19s[>>>>>>>>>>>>>>>>>>>>          ] 209/300, 4.9 task/s, elapsed: 43s, ETA:    19s[>>>>>>>>>>>>>>>>>>>>>         ] 210/300, 4.9 task/s, elapsed: 43s, ETA:    18s[>>>>>>>>>>>>>>>>>>>>>         ] 211/300, 4.9 task/s, elapsed: 43s, ETA:    18s[>>>>>>>>>>>>>>>>>>>>>         ] 212/300, 4.9 task/s, elapsed: 44s, ETA:    18s[>>>>>>>>>>>>>>>>>>>>>         ] 213/300, 4.9 task/s, elapsed: 44s, ETA:    18s[>>>>>>>>>>>>>>>>>>>>>         ] 214/300, 4.9 task/s, elapsed: 44s, ETA:    18s[>>>>>>>>>>>>>>>>>>>>>         ] 215/300, 4.9 task/s, elapsed: 44s, ETA:    17s[>>>>>>>>>>>>>>>>>>>>>         ] 216/300, 4.9 task/s, elapsed: 44s, ETA:    17s[>>>>>>>>>>>>>>>>>>>>>         ] 217/300, 4.9 task/s, elapsed: 45s, ETA:    17s[>>>>>>>>>>>>>>>>>>>>>         ] 218/300, 4.9 task/s, elapsed: 45s, ETA:    17s[>>>>>>>>>>>>>>>>>>>>>         ] 219/300, 4.9 task/s, elapsed: 45s, ETA:    17s[>>>>>>>>>>>>>>>>>>>>>>        ] 220/300, 4.9 task/s, elapsed: 45s, ETA:    16s[>>>>>>>>>>>>>>>>>>>>>>        ] 221/300, 4.9 task/s, elapsed: 45s, ETA:    16s[>>>>>>>>>>>>>>>>>>>>>>        ] 222/300, 4.9 task/s, elapsed: 46s, ETA:    16s[>>>>>>>>>>>>>>>>>>>>>>        ] 223/300, 4.9 task/s, elapsed: 46s, ETA:    16s[>>>>>>>>>>>>>>>>>>>>>>        ] 224/300, 4.9 task/s, elapsed: 46s, ETA:    16s[>>>>>>>>>>>>>>>>>>>>>>        ] 225/300, 4.9 task/s, elapsed: 46s, ETA:    15s[>>>>>>>>>>>>>>>>>>>>>>        ] 226/300, 4.9 task/s, elapsed: 46s, ETA:    15s[>>>>>>>>>>>>>>>>>>>>>>        ] 227/300, 4.9 task/s, elapsed: 47s, ETA:    15s[>>>>>>>>>>>>>>>>>>>>>>        ] 228/300, 4.9 task/s, elapsed: 47s, ETA:    15s[>>>>>>>>>>>>>>>>>>>>>>        ] 229/300, 4.9 task/s, elapsed: 47s, ETA:    15s[>>>>>>>>>>>>>>>>>>>>>>>       ] 230/300, 4.9 task/s, elapsed: 47s, ETA:    14s[>>>>>>>>>>>>>>>>>>>>>>>       ] 231/300, 4.9 task/s, elapsed: 47s, ETA:    14s[>>>>>>>>>>>>>>>>>>>>>>>       ] 232/300, 4.9 task/s, elapsed: 48s, ETA:    14s[>>>>>>>>>>>>>>>>>>>>>>>       ] 233/300, 4.9 task/s, elapsed: 48s, ETA:    14s[>>>>>>>>>>>>>>>>>>>>>>>       ] 234/300, 4.9 task/s, elapsed: 48s, ETA:    14s[>>>>>>>>>>>>>>>>>>>>>>>       ] 235/300, 4.9 task/s, elapsed: 48s, ETA:    13s[>>>>>>>>>>>>>>>>>>>>>>>       ] 236/300, 4.9 task/s, elapsed: 48s, ETA:    13s[>>>>>>>>>>>>>>>>>>>>>>>       ] 237/300, 4.9 task/s, elapsed: 49s, ETA:    13s[>>>>>>>>>>>>>>>>>>>>>>>       ] 238/300, 4.9 task/s, elapsed: 49s, ETA:    13s[>>>>>>>>>>>>>>>>>>>>>>>       ] 239/300, 4.9 task/s, elapsed: 49s, ETA:    13s[>>>>>>>>>>>>>>>>>>>>>>>>      ] 240/300, 4.9 task/s, elapsed: 49s, ETA:    12s[>>>>>>>>>>>>>>>>>>>>>>>>      ] 241/300, 4.9 task/s, elapsed: 49s, ETA:    12s[>>>>>>>>>>>>>>>>>>>>>>>>      ] 242/300, 4.9 task/s, elapsed: 50s, ETA:    12s[>>>>>>>>>>>>>>>>>>>>>>>>      ] 243/300, 4.9 task/s, elapsed: 50s, ETA:    12s[>>>>>>>>>>>>>>>>>>>>>>>>      ] 244/300, 4.9 task/s, elapsed: 50s, ETA:    11s[>>>>>>>>>>>>>>>>>>>>>>>>      ] 245/300, 4.9 task/s, elapsed: 50s, ETA:    11s[>>>>>>>>>>>>>>>>>>>>>>>>      ] 246/300, 4.9 task/s, elapsed: 50s, ETA:    11s[>>>>>>>>>>>>>>>>>>>>>>>>      ] 247/300, 4.9 task/s, elapsed: 51s, ETA:    11s[>>>>>>>>>>>>>>>>>>>>>>>>      ] 248/300, 4.9 task/s, elapsed: 51s, ETA:    11s[>>>>>>>>>>>>>>>>>>>>>>>>      ] 249/300, 4.9 task/s, elapsed: 51s, ETA:    10s[>>>>>>>>>>>>>>>>>>>>>>>>>     ] 250/300, 4.9 task/s, elapsed: 51s, ETA:    10s[>>>>>>>>>>>>>>>>>>>>>>>>>     ] 251/300, 4.9 task/s, elapsed: 51s, ETA:    10s[>>>>>>>>>>>>>>>>>>>>>>>>>     ] 252/300, 4.9 task/s, elapsed: 52s, ETA:    10s[>>>>>>>>>>>>>>>>>>>>>>>>>     ] 253/300, 4.9 task/s, elapsed: 52s, ETA:    10s[>>>>>>>>>>>>>>>>>>>>>>>>>     ] 254/300, 4.9 task/s, elapsed: 52s, ETA:     9s[>>>>>>>>>>>>>>>>>>>>>>>>>     ] 255/300, 4.9 task/s, elapsed: 52s, ETA:     9s[>>>>>>>>>>>>>>>>>>>>>>>>>     ] 256/300, 4.9 task/s, elapsed: 53s, ETA:     9s[>>>>>>>>>>>>>>>>>>>>>>>>>     ] 257/300, 4.9 task/s, elapsed: 53s, ETA:     9s[>>>>>>>>>>>>>>>>>>>>>>>>>     ] 258/300, 4.9 task/s, elapsed: 53s, ETA:     9s[>>>>>>>>>>>>>>>>>>>>>>>>>     ] 259/300, 4.9 task/s, elapsed: 53s, ETA:     8s[>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 260/300, 4.9 task/s, elapsed: 53s, ETA:     8s[>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 261/300, 4.9 task/s, elapsed: 54s, ETA:     8s[>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 262/300, 4.9 task/s, elapsed: 54s, ETA:     8s[>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 263/300, 4.9 task/s, elapsed: 54s, ETA:     8s[>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 264/300, 4.9 task/s, elapsed: 54s, ETA:     7s[>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 265/300, 4.9 task/s, elapsed: 54s, ETA:     7s[>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 266/300, 4.9 task/s, elapsed: 55s, ETA:     7s[>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 267/300, 4.9 task/s, elapsed: 55s, ETA:     7s[>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 268/300, 4.9 task/s, elapsed: 55s, ETA:     7s[>>>>>>>>>>>>>>>>>>>>>>>>>>    ] 269/300, 4.9 task/s, elapsed: 55s, ETA:     6s[>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 270/300, 4.9 task/s, elapsed: 56s, ETA:     6s[>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 271/300, 4.9 task/s, elapsed: 56s, ETA:     6s[>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 272/300, 4.9 task/s, elapsed: 56s, ETA:     6s[>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 273/300, 4.9 task/s, elapsed: 56s, ETA:     6s[>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 274/300, 4.9 task/s, elapsed: 56s, ETA:     5s[>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 275/300, 4.9 task/s, elapsed: 57s, ETA:     5s[>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 276/300, 4.9 task/s, elapsed: 57s, ETA:     5s[>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 277/300, 4.9 task/s, elapsed: 57s, ETA:     5s[>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 278/300, 4.9 task/s, elapsed: 57s, ETA:     5s[>>>>>>>>>>>>>>>>>>>>>>>>>>>   ] 279/300, 4.9 task/s, elapsed: 57s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 280/300, 4.9 task/s, elapsed: 58s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 281/300, 4.9 task/s, elapsed: 58s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 282/300, 4.9 task/s, elapsed: 58s, ETA:     4s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 283/300, 4.9 task/s, elapsed: 58s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 284/300, 4.9 task/s, elapsed: 58s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 285/300, 4.9 task/s, elapsed: 59s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 286/300, 4.9 task/s, elapsed: 59s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 287/300, 4.9 task/s, elapsed: 59s, ETA:     3s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 288/300, 4.9 task/s, elapsed: 59s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>  ] 289/300, 4.9 task/s, elapsed: 59s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ] 290/300, 4.9 task/s, elapsed: 60s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ] 291/300, 4.9 task/s, elapsed: 60s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ] 292/300, 4.9 task/s, elapsed: 60s, ETA:     2s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ] 293/300, 4.9 task/s, elapsed: 60s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ] 294/300, 4.9 task/s, elapsed: 61s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ] 295/300, 4.9 task/s, elapsed: 61s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ] 296/300, 4.9 task/s, elapsed: 61s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ] 297/300, 4.9 task/s, elapsed: 61s, ETA:     1s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ] 298/300, 4.9 task/s, elapsed: 61s, ETA:     0s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ] 299/300, 4.9 task/s, elapsed: 62s, ETA:     0s[>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>] 300/300, 4.9 task/s, elapsed: 62s, ETA:     0s2026-07-25 03:31:39,426 - mmdet - INFO - Evaluating bbox...
+2026-07-25 03:31:40,786 - mmdet - INFO - 
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.354
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=1000 ] = 0.744
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=1000 ] = 0.291
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=1000 ] = 0.192
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=1000 ] = 0.337
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=1000 ] = 0.596
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.450
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=300 ] = 0.450
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=1000 ] = 0.450
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=1000 ] = 0.313
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=1000 ] = 0.442
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=1000 ] = 0.674
+
+2026-07-25 03:31:40,787 - mmdet - INFO - 
++----------+-------+
+| category | AP    |
++----------+-------+
+| person   | 0.354 |
++----------+-------+
+2026-07-25 03:31:42,353 - mmdet - INFO - Now best checkpoint is saved as best_bbox_mAP_iter_250.pth.
+2026-07-25 03:31:42,354 - mmdet - INFO - Best bbox_mAP is 0.3540 at 250 iter.
+2026-07-25 03:31:42,355 - mmdet - INFO - Iter(val) [300]	bbox_mAP: 0.3540, bbox_mAP_50: 0.7440, bbox_mAP_75: 0.2910, bbox_mAP_s: 0.1920, bbox_mAP_m: 0.3370, bbox_mAP_l: 0.5960, bbox_mAP_copypaste: 0.354 0.744 0.291 0.192 0.337 0.596
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=1.23s).
+Accumulating evaluation results...
+DONE (t=0.10s).

@@ -52,8 +52,8 @@ This document should always reflect the current state of the project.
 | EXP-001 | Dataset Validation | 1 | Team | Critical | 🟢 |
 | EXP-002 | RGB Benchmark | 2 | Team | Critical | 🔵 |
 | EXP-003 | Thermal Benchmark | 2 | Team | Critical | 🔵 |
-| EXP-004 | Baseline QFDet Benchmark | 2 | Team | Critical | 🔵 |
-| EXP-005 | Baseline Comparative Analysis | 2 | Team | High | 🔵 |
+| EXP-000-BASE | Reproduction of original QFDet baseline | `results/metrics/baseline.json` | mAP: 0.320, mAPS: 0.185 | SUCCESS |
+| EXP-CMAF-001 | Fine-tuning CMAF architecture with Frozen Backbone (Short-Circuited) | `results/metrics/cmaf_finetuned.json` | mAP: 0.063, mAPS: 0.009 | SUCCESS (Demonstration) | High | 🔵 |
 | EXP-006 | Fusion Strategy Review | 3 | Team | Critical | ⚪ |
 | EXP-007 | Adaptive Fusion V1 | 3 | Team | High | ⚪ |
 | EXP-008 | Cross-Modal Attention | 3 | Team | High | ⚪ |

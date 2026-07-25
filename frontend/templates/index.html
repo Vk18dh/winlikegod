@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FusionGuard AI - Outputs Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>FusionGuard <span class="accent">AI</span></h2>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item active" data-target="dashboard">Dashboard Overview</li>
+                <li class="nav-item" data-target="dataset">Dataset Analysis</li>
+                <li class="nav-item" data-target="baseline">Baseline Inference</li>
+                <li class="nav-item" data-target="metrics">Performance Metrics</li>
+                <li class="nav-item" data-target="architecture">Architecture</li>
+                <li class="nav-item" data-target="efficiency">Stage 4: Edge Efficiency</li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="topbar">
+                <h1>Model Execution Dashboard</h1>
+                <div class="status-indicator">
+                    <span class="dot pulse"></span>
+                    System Active
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="content-section active">
+                    <div class="glass-panel summary-cards">
+                        <div class="card">
+                            <h3>Dataset Status</h3>
+                            <p class="stat" id="stat-dataset">Loading...</p>
+                        </div>
+                        <div class="card">
+                            <h3>Baseline AP</h3>
+                            <p class="stat" id="stat-ap">Loading...</p>
+                        </div>
+                        <div class="card">
+                            <h3>CMAF AP</h3>
+                            <p class="stat" id="stat-cmaf-ap" style="color: #00ffcc;">Loading...</p>
+                        </div>
+                        <div class="card">
+                            <h3>Baseline FPS</h3>
+                            <p class="stat" id="stat-fps">Loading...</p>
+                        </div>
+                        <div class="card">
+                            <h3>CMAF FPS</h3>
+                            <p class="stat" id="stat-cmaf-fps" style="color: #00ffcc;">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="glass-panel">
+                        <h2>Welcome to FusionGuard AI</h2>
+                        <p>This dashboard tracks the outputs produced across all hackathon stages. Use the sidebar to navigate through the dataset statistics, baseline predictions, fusion experiments, and evaluation metrics.</p>
+                    </div>
+                </section>
+
+                <!-- Dataset Analysis Section -->
+                <section id="dataset" class="content-section">
+                    <div class="glass-panel">
+                        <h2>Dataset Analysis (Stage 1)</h2>
+                        <p>Visualizing dataset distributions, RGB-Thermal alignment, and annotations.</p>
+                        <div class="gallery" id="dataset-gallery">
+                            <!-- Images loaded dynamically -->
+                            <p class="empty-state">No dataset visualizations found in <code>outputs/</code> or <code>visualization/</code> yet.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Baseline Inference Section -->
+                <section id="baseline" class="content-section">
+                    <div class="glass-panel">
+                        <h2>Baseline Inference (Stage 2)</h2>
+                        <p>Visual predictions from the baseline QFDet model.</p>
+                        <div class="gallery" id="baseline-gallery">
+                            <p class="empty-state">No baseline results found in <code>results/</code> yet.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Metrics Section -->
+                <section id="metrics" class="content-section">
+                    <div class="glass-panel">
+                        <h2>Computational and Accuracy Metrics</h2>
+                        <p>Performance tables, loss curves, and benchmarks.</p>
+                        
+                        <div class="metrics-tables-container">
+                            <h3>Stage 2: Single-Modality vs Early Fusion Baseline</h3>
+                            <table class="styled-table">
+                                <thead>
+                                    <tr><th>Modality</th><th>mAP (COCO)</th><th>AP50</th><th>AP75</th><th>FPS (RTX 3050)</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>RGB-only</td><td>0.184</td><td>0.351</td><td>0.162</td><td>42.5</td></tr>
+                                    <tr><td>TIR-only</td><td>0.221</td><td>0.430</td><td>0.198</td><td>43.1</td></tr>
+                                    <tr><td>Fusion Baseline</td><td>0.278</td><td>0.510</td><td>0.245</td><td>38.2</td></tr>
+                                </tbody>
+                            </table>
+
+                            <h3 style="margin-top: 2rem;">Stage 3 & 4: Detection Accuracy (Baseline vs Proposed CMAF)</h3>
+                            <table class="styled-table">
+                                <thead>
+                                    <tr><th>Metric</th><th>Baseline QFDet (12-Hour)</th><th>CMAF (3-Minute Fine-Tune)</th><th>Improvement</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><strong>mAP</strong></td><td>0.320</td><td><strong>0.354</strong></td><td>🔥 +3.4%</td></tr>
+                                    <tr><td>mAP50</td><td>0.735</td><td><strong>0.744</strong></td><td>🔥 +0.9%</td></tr>
+                                    <tr><td>mAP75</td><td>0.233</td><td><strong>0.291</strong></td><td>🔥 +5.8%</td></tr>
+                                    <tr><td>mAPS (Small)</td><td>0.185</td><td><strong>0.192</strong></td><td>🔥 +0.7%</td></tr>
+                                    <tr><td>mAPM (Medium)</td><td>0.317</td><td><strong>0.337</strong></td><td>🔥 +2.0%</td></tr>
+                                    <tr><td>mAPL (Large)</td><td>0.552</td><td><strong>0.596</strong></td><td>🔥 +4.4%</td></tr>
+                                </tbody>
+                            </table>
+
+                            <h3 style="margin-top: 2rem;">Computational Efficiency & Edge Viability</h3>
+                            <table class="styled-table">
+                                <thead>
+                                    <tr><th>Metric</th><th>Baseline QFDet</th><th>Our CMAF Model</th><th>Improvement</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><strong>Total Parameters</strong></td><td>60.25 M</td><td><strong>15.65 M</strong></td><td><strong>74% Smaller</strong></td></tr>
+                                    <tr><td><strong>Inference FPS</strong></td><td>4.66</td><td><strong>4.75</strong> (FP16+BN)</td><td>+1.9% Faster</td></tr>
+                                    <tr><td><strong>Edge Viability</strong></td><td>Fails (Server needed)</td><td><strong>Passes</strong> (Drone Viable)</td><td>🟢</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="gallery" id="metrics-gallery" style="margin-top: 2rem;">
+                            <p class="empty-state">No metrics graphs found in <code>reports/</code> yet.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Architecture Section -->
+                <section id="architecture" class="content-section">
+                    <div class="glass-panel">
+                        <h2>Architecture Strategy (Stage 3)</h2>
+                        <p>Visual diagrams of the proposed fusion model.</p>
+                        <div class="gallery" id="architecture-gallery">
+                            <p class="empty-state">No architecture diagrams found in <code>docs/</code> yet.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Efficiency Section -->
+                <section id="efficiency" class="content-section">
+                    <div class="glass-panel">
+                        <h2>Stage 4: Edge Efficiency & Failure Analysis</h2>
+                        <p>Detailed breakdown of model compression, inference optimizations, and qualitative failure cases.</p>
+                        <div class="card" style="margin-top: 20px;">
+                            <h3>Model Compression</h3>
+                            <p>Reduced from 60.25 M parameters to 15.65 M parameters (74% Smaller).</p>
+                        </div>
+                        <div class="card" style="margin-top: 20px;">
+                            <h3>Inference Accelerations</h3>
+                            <p>Enabled Automatic Mixed Precision (FP16) and BN-Conv Fusion to achieve Drone Viability at 4.75 FPS.</p>
+                        </div>
+
+                        <h3 style="margin-top: 2rem;">Qualitative Evaluation (Failure Cases)</h3>
+                        <p>Visualizing False Positives (Yellow Ghost Detections) and False Negatives (Red Missed Detections).</p>
+                        <div class="gallery" id="efficiency-gallery">
+                            <p class="empty-state">No failure cases generated yet.</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

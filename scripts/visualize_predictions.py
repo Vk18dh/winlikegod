@@ -26,7 +26,7 @@ def draw_boxes(image_path, img_preds, out_path, color=(0, 0, 255)):
 
 def visualize(model_name):
     print(f"Generating custom visualizations for {model_name}...")
-    anno_path = '/workspace/datasets/VTUAV_subset/vtuav_processed/annotations/test.json'
+    anno_path = '/workspace/datasets/VTUAV_subset/VTUAV_subset/annotations/test.json'
     pred_path = f'/workspace/results/predictions/{model_name}.pkl'
     out_dir = f'/workspace/results/visualizations/{model_name}'
 
@@ -48,8 +48,8 @@ def visualize(model_name):
             break
             
         file_name = img_info['file_name']
-        rgb_path = os.path.join('/workspace/datasets', img_info['file_name'])
-        ir_path = rgb_path.replace('VTUAV_co', 'VTUAV_ir')
+        rgb_path = os.path.join('/workspace/datasets/VTUAV_subset/VTUAV_subset/VTUAV_co/test/images', img_info['file_name'])
+        ir_path = os.path.join('/workspace/datasets/VTUAV_subset/VTUAV_subset/VTUAV_ir/test/images', img_info['file_name'])
         
         img_preds = preds[i] # This corresponds to the i-th image in the test set
         

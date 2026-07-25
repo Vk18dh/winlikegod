@@ -1,7 +1,7 @@
 {
     "FLOPs": "485.64 GFLOPs",
     "Params": "60.25 M",
-    "FPS": 4.66,
-    "Inference Time": 214.63,
+    "FPS": 4.74,
+    "Inference Time": 211.15,
     "Model Size": 231.55
 }

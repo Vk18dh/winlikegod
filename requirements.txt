@@ -1,0 +1,26 @@
+# Core Deep Learning
+torch==1.13.1
+torchvision==0.14.1
+
+# MMLab Ecosystem (Crucial version pinnings)
+openmim>=0.3.7
+mmcv-full==1.7.0
+
+# Scientific & Array operations
+numpy<2.0.0
+matplotlib>=3.3.0
+pandas>=1.1.0
+
+# Code formatting & utils
+yapf==0.40.1
+opencv-python>=4.5.0
+terminaltables>=3.1.0
+
+# QFDet Specific Runtime Dependencies
+pycocotools>=2.0.2
+six>=1.15.0
+terminaltables>=3.1.0
+tqdm>=4.48.0
+
+# Frontend
+Flask>=2.0.0
